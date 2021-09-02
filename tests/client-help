@@ -1,0 +1,10 @@
+# We need our Docker setup for this test
+# @TEST-REQUIRES: $SCRIPTS/docker-requirements.sh
+
+# @TEST-EXEC: bash %INPUT
+# @TEST-EXEC: btest-diff output
+
+set -e
+. $SCRIPTS/common.sh
+
+docker_run client "zeek-client --help" >output
