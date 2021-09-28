@@ -8,8 +8,9 @@ ARG zkgrpms="python3-GitPython python3-semantic_version"
 # Packages for additional tooling
 ARG toolrpms="bind-utils findutils procps-ng net-tools telnet"
 
+ENV PATH "/usr/local/zeek/bin:${PATH}"
+
 RUN dnf install -y $devrpms $zkgrpms $toolrpms && dnf clean all
-RUN echo "export PATH=$PATH:/usr/local/zeek/bin" >/etc/profile.d/zeek.sh
 RUN mkdir -p /var/log/zeek/mgmt /var/log/zeek/cluster
 
 WORKDIR /var/log/zeek

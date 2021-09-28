@@ -4,7 +4,7 @@
 # This includes the availability of images that get build in the run-up to
 # these tests, via the setup in the Docker directory.
 
-docker_image=zeektest/zeek
+docker_image=zeek:latest
 
 command -v docker >/dev/null || {
     echo "docker command unavailable"
@@ -18,7 +18,7 @@ command -v docker-compose >/dev/null || {
 
 # The zeektest/zeek image is the main driver for our docker-compose setup,
 # so verify it exists:
-docker images --format '{{.Repository}}' | grep -q $docker_image || {
+docker images --format '{{.Repository}}:{{.Tag}}' | grep -q $docker_image || {
     echo "Docker image $docker_image not found"
     exit 1
 }

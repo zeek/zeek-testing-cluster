@@ -11,7 +11,7 @@ trap cleanup EXIT
 docker_run() {
     local container="$1"
     local command="$2"
-    docker exec ${testname}_${container}_1 bash -l -c "$command"
+    docker exec ${testname}_${container}_1 $command
 }
 
 docker-compose -p $testname -f $DOCKER/docker-compose.yml up -d

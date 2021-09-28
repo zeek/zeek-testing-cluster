@@ -1,12 +1,15 @@
-
 DIAG=diag.log
 BTEST=../../../auxil/btest/btest
 
-make-verbose: docker
+make-verbose: docker test-verbose
+
+make-brief: docker test-brief
+
+test-verbose:
 	@rm -f $(DIAG)
 	@$(BTEST) -f $(DIAG)
 
-make-brief: docker
+test-brief:
 	@rm -f $(DIAG)
 	@$(BTEST) -b -f $(DIAG)
 
@@ -25,4 +28,4 @@ coverage:
 update-timing:
 	true
 
-.PHONY: make-verbose make-brief clean coverage distclean docker update-timing
+.PHONY: make-verbose make-brief test-verbose test-brief clean coverage distclean docker update-timing
