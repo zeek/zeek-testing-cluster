@@ -1,0 +1,21 @@
+# This is sourced from various tests directly and provides tooling
+# for operating on the Docker containers spun up by docker-compose.
+
+testname=$(echo "$TEST_NAME" | sed 's/[^a-zA-Z0-9]/_/g')
+
+docker_compose_up() {
+    local configfile="${1:-docker-compose.yml}"
+    docker-compose -p $testname -f "$configfile" up -d
+}
+
+docker_run() {
+    local container="$1"
+    local command="$2"
+    docker exec ${testname}_${container}_1 $command
+}
+
+# Populate the files needed for our default docker-compose setup.
+# Individual tests can still adapt this as needed. This might go
+# into an initializer later.
+cp $DOCKER/docker-compose.yml .
+cp -pr $DOCKER/zeekscripts .
