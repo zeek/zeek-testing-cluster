@@ -1,10 +1,10 @@
 # We need our Docker setup for this test
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
-
 # @TEST-EXEC: bash %INPUT
 # @TEST-EXEC: btest-diff output
 
-set -e
 . $SCRIPTS/docker-setup
+
+docker_populate
 docker_compose_up
-docker_run client "zeek-client --help" >output
+docker_exec client "zeek-client --help" >output

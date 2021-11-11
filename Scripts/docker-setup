@@ -1,21 +1,30 @@
 # This is sourced from various tests directly and provides tooling
 # for operating on the Docker containers spun up by docker-compose.
 
+set -e
+
 testname=$(echo "$TEST_NAME" | sed 's/[^a-zA-Z0-9]/_/g')
+
+# Populate the files needed for our default docker-compose setup.
+# Individual tests can still adapt this as needed. This might go
+# into an initializer later.
+docker_populate() {
+    local template="${1:-default}"
+
+    cp $DOCKER/setups/$template/docker-compose.yml .
+    cp -pr $DOCKER/setups/$template/zeekscripts .
+}
 
 docker_compose_up() {
     local configfile="${1:-docker-compose.yml}"
     docker-compose -p $testname -f "$configfile" up -d
 }
 
-docker_run() {
+docker_exec() {
     local container="$1"
     local command="$2"
-    docker exec ${testname}_${container}_1 $command
-}
+    shift 2
+    local args="$@"
 
-# Populate the files needed for our default docker-compose setup.
-# Individual tests can still adapt this as needed. This might go
-# into an initializer later.
-cp $DOCKER/docker-compose.yml .
-cp -pr $DOCKER/zeekscripts .
+    docker exec $args ${testname}_${container}_1 $command
+}

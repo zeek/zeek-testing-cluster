@@ -2,16 +2,11 @@ version: "3"
 
 # docker-compose requires the x- prefix for unrelated YAML nodes
 x-zeek-template: &ZEEK_BASE
-  image: zeek:latest
+  image: zeektest:latest
   environment:
     ZEEK_DEFAULT_LISTEN_ADDRESS: "0.0.0.0"
   volumes:
     - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
-
-x-zeek-agent: &ZEEK_AGENT
-  command: /usr/local/zeek/bin/zeek -j site/testing/agent.zeek
-  ports:
-    - "9999"
 
 x-zeek-controller: &ZEEK_CONTROLLER
   command: /usr/local/zeek/bin/zeek -j site/testing/controller.zeek
@@ -23,14 +18,6 @@ services:
     <<: *ZEEK_BASE
     <<: *ZEEK_CONTROLLER
 
-  inst1:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_AGENT
-    
-  inst2:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_AGENT
-
   client:
-    image: zeek:latest
+    image: zeektest:latest
     tty: true
