@@ -7,11 +7,11 @@ make-brief: docker test-brief
 
 test-verbose:
 	@rm -f $(DIAG)
-	@$(BTEST) -f $(DIAG)
+	@$(BTEST) -j -f $(DIAG)
 
 test-brief:
 	@rm -f $(DIAG)
-	@$(BTEST) -b -f $(DIAG)
+	@$(BTEST) -j -b -f $(DIAG)
 
 clean:
 	$(MAKE) -C Docker clean

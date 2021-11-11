@@ -2,6 +2,7 @@
 # for operating on the Docker containers spun up by docker-compose.
 
 set -e
+shopt -s expand_aliases
 
 testname=$(echo "$TEST_NAME" | sed 's/[^a-zA-Z0-9]/_/g')
 
@@ -25,11 +26,25 @@ docker_compose_up() {
 }
 
 docker_exec() {
-    local container="$1"
-    local command="$2"
-    shift 2
-    local args="$@"
+    # If first argument starts with "-", we interpret everything up to a
+    # required "--" as docker exec arguments.
+    local args=()
 
-    # The eval here is to get quotes reliably into the passed command.
-    eval "docker exec $args ${testname}_${container}_1 $command"
+    if [[ $1 == -* ]]; then
+        while [[ $1 != '--' ]]; do
+            args+=("$1")
+            shift
+        done
+
+        # Skip the "--"
+        shift
+    fi
+
+    local container="$1"
+    shift
+    local command="$@"
+
+    docker exec ${args[@]} ${testname}_${container}_1 $command
 }
+
+alias zeek_client="docker_exec -i -- client zeek-client --controller controller"
