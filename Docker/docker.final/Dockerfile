@@ -6,7 +6,7 @@ ARG devrpms="cmake gcc gcc-c++ libpcap make"
 # Packages for zkg
 ARG zkgrpms="python3-GitPython python3-semantic_version"
 # Packages for additional tooling
-ARG toolrpms="bind-utils findutils procps-ng net-tools telnet"
+ARG toolrpms="bind-utils findutils procps-ng net-tools telnet psmisc"
 
 ENV PATH "/usr/local/zeek/bin:${PATH}"
 
