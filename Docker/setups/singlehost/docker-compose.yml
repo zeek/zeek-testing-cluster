@@ -12,6 +12,7 @@ x-zeek-controller: &ZEEK_CONTROLLER
   command: /usr/local/zeek/bin/zeek -j site/testing/controller.zeek
   ports:
     - "2150"
+  hostname: controller
 
 services:
   controller:
@@ -21,3 +22,4 @@ services:
   client:
     image: zeektest:latest
     tty: true
+    hostname: client
