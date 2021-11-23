@@ -1,0 +1,22 @@
+#! /usr/bin/env bash
+#
+# Helper script that waits until a given Zeek log first shows the
+# requested line or times out, whichever happens sooner.
+
+timeout="$1"
+line="$2"
+log="/var/log/zeek/$3"
+
+if [ ! -f "$log" ]; then
+    echo "$log does not exist"
+    exit 1
+fi
+
+timeout $timeout grep -q "$line" <(tail -f -n +1 $log)
+
+if [ $? -eq 124 ]; then
+    echo "requested line did not appear in $log: $line"
+    exit 1
+fi
+
+exit 0

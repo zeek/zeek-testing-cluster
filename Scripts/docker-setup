@@ -13,6 +13,10 @@ docker_populate() {
 
     cp $DOCKER/setups/$template/docker-compose.yml .
     cp -pr $DOCKER/setups/$template/zeekscripts .
+
+    if [ -d $DOCKER/setups/$template/scripts ]; then
+        cp -pr $DOCKER/setups/$template/scripts .
+    fi
 }
 
 docker_compose_up() {
@@ -26,5 +30,6 @@ docker_exec() {
     shift 2
     local args="$@"
 
-    docker exec $args ${testname}_${container}_1 $command
+    # The eval here is to get quotes reliably into the passed command.
+    eval "docker exec $args ${testname}_${container}_1 $command"
 }

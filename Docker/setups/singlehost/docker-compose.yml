@@ -7,6 +7,7 @@ x-zeek-template: &ZEEK_BASE
     ZEEK_DEFAULT_LISTEN_ADDRESS: "0.0.0.0"
   volumes:
     - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
+    - ./scripts:/usr/local/bin:z
 
 x-zeek-controller: &ZEEK_CONTROLLER
   command: /usr/local/zeek/bin/zeek -j site/testing/controller.zeek
