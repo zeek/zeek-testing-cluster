@@ -4,6 +4,7 @@ testname=$(echo "$TEST_NAME" | sed 's/[^a-zA-Z0-9]/_/g')
 
 [ -z "$testname" ] && exit 0
 [ -f docker-compose.yml ] || exit 0
+[ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
 
 docker-compose -p $testname -f docker-compose.yml down -t 1
 exit 0
