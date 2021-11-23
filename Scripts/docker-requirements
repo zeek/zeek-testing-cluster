@@ -4,7 +4,7 @@
 # This includes the availability of images that get build in the run-up to
 # these tests, via the setup in the Docker directory.
 
-docker_image=zeek:latest
+docker_image=zeektest:latest
 
 command -v docker >/dev/null || {
     echo "docker command unavailable"

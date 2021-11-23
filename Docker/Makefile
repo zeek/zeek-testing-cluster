@@ -8,6 +8,6 @@ clean:
 # This might need root
 distclean: clean
 	rm -rf ./cache/*
-	docker rmi -f zeektest/prebuild zeektest/build zeektest/zeek
+	docker rmi -f zeektest-prebuild zeektest-build zeektest
 
 .PHONY: docker clean purge

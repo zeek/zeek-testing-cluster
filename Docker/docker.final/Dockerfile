@@ -15,4 +15,4 @@ RUN mkdir -p /var/log/zeek/mgmt /var/log/zeek/cluster
 
 WORKDIR /var/log/zeek
 
-COPY --from=zeektest/build /usr/local/zeek /usr/local/zeek
+COPY --from=zeektest-build /usr/local/zeek /usr/local/zeek

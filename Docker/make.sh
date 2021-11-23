@@ -2,8 +2,8 @@
 #
 # This script creates or updates the Docker image corresponding to the current
 # sources in the Zeek tree that has this tesuite hooked in. If it cannot find
-# any source files newer than the creation date of the zeektest/zeek image, it
-# does nothing. Otherwise it runs the build process, hopefully accelerated by a
+# any source files newer than the creation date of the zeektest image, it does
+# nothing. Otherwise it runs the build process, hopefully accelerated by a
 # cached build tree and/or ccache.
 
 # Various absolute paths
@@ -14,7 +14,7 @@ build_path=$dir/build
 
 # The name of the final Docker image. Note: this matches the image name used by
 # the Docker image-building Github action (docker.yml).
-docker_image=zeek:latest
+docker_image=zeektest:latest
 
 # Whether we need to (re-)build the image
 do_build=no
@@ -31,8 +31,8 @@ docker images --format '{{.Repository}}:{{.Tag}}' | grep -q $docker_image || {
     do_build=yes
 }
 
-# If we're running in Github CI, a zeek:latest image must be available and we're
-# going to use it as-is. (It will have just been built.) If the image is
+# If we're running in Github CI, a zeektest:latest image must be available and
+# we're going to use it as-is. (It will have just been built.) If the image is
 # unavailable, something is wrong.
 if [[ -n "$GITHUB_ACTION" ]]; then
      if [[ $do_build = yes ]]; then
@@ -55,9 +55,9 @@ if [[ $do_build = no ]]; then
                      | sort -rn | head -1 | cut -d. -f1)
 
     # For the image's last build date we use our own label (which records epoch
-    # seconds) on the final stage in the zeek-prebuild -> zeekt-build ->
-    # zeek:latest progression. This technically takes the start time, but the
-    # final stage gets created after we've rebuilt zeektest/build with the
+    # seconds) on the final stage in the zeektest-prebuild -> zeektest-build ->
+    # zeektest:latest progression. This technically takes the start time, but the
+    # final stage gets created after we've rebuilt zeektest-build with the
     # latest source tree. Double-check we get a number, since other strings
     # get returned if the label doesn't exist.
     ts_image=$(docker image inspect --format '{{ index .Config.Labels "com.corelight.buildtime" }}' $docker_image)
@@ -88,22 +88,22 @@ fi
 
 set -e
 
-# This generates a "pre-build" image (zeek-prebuild) that has all the
+# This generates a "pre-build" image (zeektest-prebuild) that has all the
 # requirements for building Zeek. Since docker does not support build-time
 # volume mounts, we use this pre-build image to then run a build command with
 # volumes mounted; the result of this build gets committed to a new image
-# (zeek-build). The final step is a multi-stage build continuation that grabs
-# the installed build into a slimmer final image (zeek:latest).
+# (zeektest-build). The final step is a multi-stage build continuation that grabs
+# the installed build into a slimmer final image (zeektest:latest).
 
-docker build -t zeek-prebuild ./docker.prebuild
+docker build -t zeektest-prebuild ./docker.prebuild
 
-docker rm -f zeek-builder 2>/dev/null
-docker run -it --name zeek-builder \
+docker rm -f zeektest-builder 2>/dev/null
+docker run -it --name zeektest-builder \
        -v "$src_path:/mnt/vol/src:z" \
        -v "$ccache_path:/mnt/vol/ccache:z" \
-       -v "$build_path:/mnt/vol/build:z" zeek-prebuild
-docker commit zeek-builder zeek-build
-docker rm -f zeek-builder 2>/dev/null
+       -v "$build_path:/mnt/vol/build:z" zeektest-prebuild
+docker commit zeektest-builder zeektest-build
+docker rm -f zeektest-builder 2>/dev/null
 
 # We add a timestamp label to the build to get a reliable build time. Both
 # .Created and Metadata.LastTagTime have their problems: the former doesn't
