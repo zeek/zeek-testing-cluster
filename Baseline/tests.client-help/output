@@ -7,8 +7,8 @@ A zeek-client prototype
 optional arguments:
   -h, --help            show this help message and exit
   --controller HOST:PORT
-                        Address and port of the controller (default:
-                        127.0.0.1:2150)
+                        Address and port of the controller, either of which
+                        may be omitted (default: 127.0.0.1:2150)
   --verbose, -v         Increase program output for debugging. Use multiple
                         times for more output (e.g. -vvv).
 
