@@ -25,4 +25,4 @@ instance-1 = 127.0.0.1:2151
 instance-2 = 127.0.0.1:2152
 EOF
 
-zeek_client instances >output
+zeek_client get-instances >output

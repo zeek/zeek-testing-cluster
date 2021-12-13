@@ -28,4 +28,4 @@ instance-1
 instance-2
 EOF
 
-zeek_client instances >output
+zeek_client get-instances >output
