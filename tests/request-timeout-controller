@@ -1,0 +1,20 @@
+# This test verifies that the client times out when not receiving expected
+# controller responses.
+
+# @TEST-REQUIRES: $SCRIPTS/docker-requirements
+# @TEST-EXEC: bash %INPUT
+# @TEST-EXEC: btest-diff output
+
+. $SCRIPTS/docker-setup
+
+docker_populate singlehost
+
+cat >>etc/zeek-client.cfg <<EOF
+[client]
+request_timeout_secs = 3
+EOF
+
+docker_compose_up
+
+# The timeout makes zeek-client exit with error, so we mask it.
+zeek_client -c /usr/local/etc/zeek-client.cfg test-timeout 2>output || true

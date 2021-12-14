@@ -18,6 +18,10 @@ docker_populate() {
     if [ -d $DOCKER/setups/$template/scripts ]; then
         cp -pr $DOCKER/setups/$template/scripts .
     fi
+
+    if [ -d $DOCKER/setups/$template/etc ]; then
+        cp -pr $DOCKER/setups/$template/etc .
+    fi
 }
 
 docker_compose_up() {

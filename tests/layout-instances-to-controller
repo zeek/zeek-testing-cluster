@@ -1,3 +1,6 @@
+# This test verifies the connectivity establishment from two agents to the
+# controller, as specified by a cluster configuration uploaded by the client.
+
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
 # @TEST-EXEC: btest-diff output
