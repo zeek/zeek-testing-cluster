@@ -4,10 +4,28 @@
 set -e
 shopt -s expand_aliases
 
-# The extra underscore here delineates project name from containers, so in
+# The name of the current test, tweaked to make suitable for a docker container
+# name. The extra underscore here delineates project name from containers, so in
 # practice two underscores result. This allows us to identify all containers
 # relating to a specific test reliably, outside of docker-compose.
 testname=$(echo "${TEST_NAME}_" | sed 's/[^a-zA-Z0-9]/_/g')
+
+# Enable command tracing with time info when requested
+if [ -n "$TEST_TRACE_COMMANDS" ]; then
+    # Redirect set -x output to a file descriptor
+    exec 42>bashtrace
+    BASH_XTRACEFD=42
+
+    # Add an exit handler so timing info includes something that runs after the
+    # last "real" command has executed, showing that command's execution time.
+    trap true EXIT
+
+    # Put timing info into execution trace and enable tracing. We use this
+    # evaluation time as zero, and make times relative to it.
+    N=`date +%s%N`
+    export PS4='+[$(((`date +%s%N`-$N)/1000000))ms][${BASH_SOURCE}:${LINENO}]: ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+    set -x
+fi
 
 # Populate the files needed for our default docker-compose setup.
 # Individual tests can still adapt this as needed. This might go
