@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+
+testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
+
+if [ -z "$testname" ]; then
+    echo "WARNING: btest initializer got no test name"
+    exit 0
+fi
+
+# This runs before we populate the test directory with a docker-compose
+# setup. Just delete all containers with the test name in it. The double
+# underscores separate the docker-compose project name from individual
+# container names and identify the test.
+docker rm -f $(docker ps -a --filter name="${testname}__" --format '{{.Names}}')
+
+exit 0

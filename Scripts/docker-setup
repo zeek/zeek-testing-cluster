@@ -4,7 +4,10 @@
 set -e
 shopt -s expand_aliases
 
-testname=$(echo "$TEST_NAME" | sed 's/[^a-zA-Z0-9]/_/g')
+# The extra underscore here delineates project name from containers, so in
+# practice two underscores result. This allows us to identify all containers
+# relating to a specific test reliably, outside of docker-compose.
+testname=$(echo "${TEST_NAME}_" | sed 's/[^a-zA-Z0-9]/_/g')
 
 # Populate the files needed for our default docker-compose setup.
 # Individual tests can still adapt this as needed. This might go
@@ -24,11 +27,16 @@ docker_populate() {
     fi
 }
 
+# The corresponding "docker-compose down" happens in docker-compose-teardown.
+# Might shift this around in the future for better symmetry.
 docker_compose_up() {
     local configfile="${1:-docker-compose.yml}"
-    docker-compose -p $testname -f "$configfile" up -d
+    docker-compose -p ${testname} -f "$configfile" up -d
 }
 
+# Wrapper to "docker exec" to run a command in a specific container.
+# The wrapper provides the test-naming context so we select the
+# relevant container.
 docker_exec() {
     # If first argument starts with "-", we interpret everything up to a
     # required "--" as docker exec arguments.
