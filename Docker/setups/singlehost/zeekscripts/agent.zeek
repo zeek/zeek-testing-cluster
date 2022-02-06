@@ -1,5 +1,5 @@
-@load policy/frameworks/cluster/agent
+@load policy/frameworks/management/agent
 @load ./agent-local.zeek
 
-redef ClusterAgent::directory = "/var/log/zeek/mgmt";
-redef ClusterAgent::cluster_directory = "/var/log/zeek/cluster";
+redef Management::Agent::directory = "/var/log/zeek/mgmt";
+redef Management::Agent::cluster_directory = "/var/log/zeek/cluster";

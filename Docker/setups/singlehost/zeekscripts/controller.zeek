@@ -1,4 +1,4 @@
-@load policy/frameworks/cluster/controller
+@load policy/frameworks/management/controller
 @load ./controller-local.zeek
 
-redef ClusterController::directory = "/var/log/zeek/mgmt";
+redef Management::Controller::directory = "/var/log/zeek/mgmt";
