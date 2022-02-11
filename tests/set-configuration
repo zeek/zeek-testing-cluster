@@ -13,7 +13,7 @@ docker_compose_up
 # The Zeek host now runs a controller. Run an agent alongside it.
 docker_exec controller mkdir /tmp/agent
 docker_exec -d -w /tmp/agent -- controller zeek -j site/testing/agent.zeek \
-    ClusterAgent::name=instance-1 \
+    Management::Agent::name=instance-1 \
     Broker::default_port=10000/tcp
 
 zeek_client set-config - <<EOF

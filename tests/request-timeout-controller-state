@@ -14,7 +14,11 @@ docker_populate singlehost
 # investigating.
 
 cat >>zeekscripts/controller-local.zeek <<EOF
-redef ClusterController::request_timeout = 1sec;
+redef Management::Request::timeout_interval = 1sec;
+
+# We need to redefine this down, otherwise the low request timeout
+# will be masked by the higher table-checking default value of 10sec:
+redef table_expire_interval = 1sec;
 EOF
 
 cat >>etc/zeek-client.cfg <<EOF

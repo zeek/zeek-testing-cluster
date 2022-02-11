@@ -15,11 +15,11 @@ docker_compose_up
 # to segregate logs.
 docker_exec controller mkdir /tmp/agent1 /tmp/agent2
 docker_exec -d -w /tmp/agent1 -- controller zeek -j site/testing/agent.zeek \
-    ClusterAgent::name=instance-1 \
+    Management::Agent::name=instance-1 \
     Broker::default_port=10000/tcp
 docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
-    ClusterAgent::name=instance-2 \
-    ClusterAgent::default_port=2152/tcp \
+    Management::Agent::name=instance-2 \
+    Management::Agent::default_port=2152/tcp \
     Broker::default_port=10001/tcp
 
 zeek_client set-config - <<EOF
