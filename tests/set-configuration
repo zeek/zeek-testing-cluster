@@ -6,6 +6,7 @@
 # @TEST-EXEC: btest-diff output
 
 . $SCRIPTS/docker-setup
+. $SCRIPTS/test-helpers
 
 docker_populate singlehost
 docker_compose_up
@@ -40,6 +41,8 @@ instance = instance-1
 role = worker
 interface = lo
 EOF
+
+wait_for_all_nodes_running || fail "nodes did not end up running"
 
 # Retrieve the cluster nodes and strip the PIDs, since they
 # change from run to run.
