@@ -11,6 +11,7 @@ fi
 # setup. Just delete all containers with the test name in it. The double
 # underscores separate the docker-compose project name from individual
 # container names and identify the test.
-docker rm -f $(docker ps -a --filter name="${testname}__" --format '{{.Names}}')
+containers="$(docker ps -a --filter name="${testname}__" --format '{{.Names}}')"
+[ -n "$containers" ] && docker rm -f $containers
 
 exit 0
