@@ -77,4 +77,6 @@ docker_exec() {
     docker exec ${args[@]} ${testname}_${container}_1 $command
 }
 
-alias zeek_client="docker_exec -i -- client zeek-client --controller controller"
+zeek_client() {
+    docker_exec -i -- client zeek-client --controller controller "$@"
+}
