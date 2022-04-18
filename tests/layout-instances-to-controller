@@ -19,10 +19,17 @@ docker_compose_up
 # The Zeek host now runs a controller. Run two agents alongside it
 # that connect to the controller. Run them out of separate directories
 # to segregate logs.
+#
+# Even agents connecting to the controller still need their own listening port,
+# so data cluster nodes can peer with them. Since the Supervisor also listens,
+# this means we require 4 ports in such a setup (which is an unusual one, since
+# you wouldn't typically run multiple agents on a machine).
+#
 docker_exec controller mkdir /tmp/agent1 /tmp/agent2
 docker_exec -d -w /tmp/agent1 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::name=instance-1 Broker::default_port=10000/tcp
 docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
+    Management::Agent::default_port=2152/tcp \
     Management::Agent::name=instance-2 Broker::default_port=10001/tcp
 
 zeek_client set-config - <<EOF

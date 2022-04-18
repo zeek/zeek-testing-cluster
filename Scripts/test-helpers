@@ -1,0 +1,42 @@
+# Basic helpers sourced by some of the tests.
+
+# Exits with error and error message.
+fail() {
+    local msg="$1"
+
+    echo "failure: $msg"
+    exit 1
+}
+
+# Runs a given command, saving stdout and stderr to separate, named files, and
+# validates exit code. Exits with error if validation fails.
+run() {
+    local cmd="$1"
+    local ret="$2"
+    local name="$3"
+
+    { eval "$cmd"; } >stdout.$name 2>stderr.$name
+    [ $? -eq $ret ] || fail "[$name] '$cmd' did not exit with $ret"
+}
+
+# Checks current cluster node state via "zeek-client get-nodes" until nodes get
+# reported and all nodes are in running state, or 10 seconds have passed. Exits
+# with 0 once all nodes are running, 1 when the timeout is hit or other problems
+# arise.
+wait_for_all_nodes_running() {
+    for i in $(seq 10); do
+        # Retrieve node status, and extract run states from it.
+        # Count how often that is "RUNNING" vs something else.
+        zeek_client get-nodes \
+            | jq -r '.results[][].state' \
+            | awk "/RUNNING/  { r += 1 }
+                   !/RUNNING/ { o += 1 }
+                   END        { if ( r > 0 && o == 0 ) { exit 0 };
+                                exit 1 }"
+
+        [ $? -eq 0 ] && return 0
+        sleep 1
+    done
+
+    return 1
+}

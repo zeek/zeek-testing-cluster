@@ -2,6 +2,7 @@
 # for operating on the Docker containers spun up by docker-compose.
 
 set -e
+set -o pipefail
 shopt -s expand_aliases
 
 # The name of the current test, tweaked to make suitable for a docker container
@@ -77,4 +78,6 @@ docker_exec() {
     docker exec ${args[@]} ${testname}_${container}_1 $command
 }
 
-alias zeek_client="docker_exec -i -- client zeek-client --controller controller"
+zeek_client() {
+    docker_exec -i -- client zeek-client --controller controller "$@"
+}

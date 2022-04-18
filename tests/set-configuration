@@ -6,6 +6,7 @@
 # @TEST-EXEC: btest-diff output
 
 . $SCRIPTS/docker-setup
+. $SCRIPTS/test-helpers
 
 docker_populate singlehost
 docker_compose_up
@@ -41,6 +42,8 @@ role = worker
 interface = lo
 EOF
 
+wait_for_all_nodes_running || fail "nodes did not end up running"
+
 # Retrieve the cluster nodes and strip the PIDs, since they
 # change from run to run.
-zeek_client get-nodes | jq 'del(.[][].pid)' >output
+zeek_client get-nodes | jq 'del(.results[][].pid)' >output
