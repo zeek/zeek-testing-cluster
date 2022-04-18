@@ -43,4 +43,4 @@ EOF
 
 # Retrieve the cluster nodes and strip the PIDs, since they
 # change from run to run.
-zeek_client get-nodes | jq 'del(.[][].pid)' >output
+zeek_client get-nodes | jq 'del(.results[][].pid)' >output
