@@ -5,11 +5,11 @@ make-verbose: docker test-verbose
 
 make-brief: docker test-brief
 
-test-verbose:
+test-verbose: docker
 	@rm -f $(DIAG)
 	@$(BTEST) -j -f $(DIAG)
 
-test-brief:
+test-brief: docker
 	@rm -f $(DIAG)
 	@$(BTEST) -j -b -f $(DIAG)
 
