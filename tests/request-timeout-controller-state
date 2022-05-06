@@ -6,6 +6,7 @@
 # @TEST-EXEC: btest-diff output
 
 . $SCRIPTS/docker-setup
+. $SCRIPTS/test-helpers
 
 docker_populate singlehost
 
@@ -28,5 +29,7 @@ EOF
 
 docker_compose_up
 
-# The timeout makes zeek-client exit with error, so we mask it.
-zeek_client -c /usr/local/etc/zeek-client.cfg test-timeout --with-state 2>output || true
+# The client does receive a response, indicating a controller-side timeout.
+# The client succeeds in this case, as it's the purpose of the test.
+zeek_client -c /usr/local/etc/zeek-client.cfg test-timeout --with-state >output \
+    || fail "test-timeout failed"
