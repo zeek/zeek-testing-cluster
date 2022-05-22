@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:35
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 
 # Packages for future dev usage (building plugins, running Zeek itself, etc)
