@@ -5,7 +5,7 @@ x-zeek-template: &ZEEK_BASE
   image: zeektest:latest
 
 x-zeek-controller: &ZEEK_CONTROLLER
-  command: /usr/local/zeek/bin/zeek -j site/testing/controller.zeek
+  command: /usr/local/zeek/bin/zeek -j "site/testing/${ZEEK_ENTRYPOINT:-controller-and-agent.zeek}"
   environment:
     ZEEK_DEFAULT_LISTEN_ADDRESS: "0.0.0.0"
   ports:
