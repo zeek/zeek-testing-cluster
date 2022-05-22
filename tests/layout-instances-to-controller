@@ -8,17 +8,9 @@
 . $SCRIPTS/docker-setup
 
 docker_populate singlehost
+ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
 
-# Configure the agents to connect to the controller
-cat >>zeekscripts/agent-local.zeek <<EOF
-redef Management::Agent::controller = [\$address="127.0.0.1", \$bound_port=2150/tcp];
-EOF
-
-docker_compose_up
-
-# The Zeek host now runs a controller. Run two agents alongside it
-# that connect to the controller. Run them out of separate directories
-# to segregate logs.
+# Run two agents alongside the controller that connect to it.
 #
 # Even agents connecting to the controller still need their own listening port,
 # so data cluster nodes can peer with them. Since the Supervisor also listens,

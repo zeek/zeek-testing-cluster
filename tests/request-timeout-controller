@@ -1,5 +1,5 @@
 # This test verifies that the client times out when not receiving expected
-# controller responses.
+# controller responses. This only requires a controller, no agents.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
@@ -8,7 +8,7 @@
 . $SCRIPTS/docker-setup
 . $SCRIPTS/test-helpers
 
-docker_populate singlehost
+ZEEK_ENTRYPOINT=controller.zeek docker_populate singlehost
 
 cat >>etc/zeek-client.cfg <<EOF
 [client]
