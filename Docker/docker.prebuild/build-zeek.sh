@@ -4,7 +4,7 @@
 # the idea is that the user provides local sources as a bind mount.
 zeek_repo="https://github.com/zeek/zeek"
 zeek_branch="master"
-zeek_confflags="--enable-zeek-client --ccache"
+zeek_confflags="--build-type=Release --enable-zeek-client --disable-zeekctl --ccache"
 
 do_configure=no
 do_buildwipe=no
