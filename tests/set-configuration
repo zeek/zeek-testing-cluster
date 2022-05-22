@@ -11,9 +11,11 @@
 docker_populate singlehost
 docker_compose_up
 
-# The Zeek host now runs a controller. Run an agent alongside it.
-docker_exec controller mkdir /tmp/agent
-docker_exec -d -w /tmp/agent -- controller zeek -j site/testing/agent.zeek \
+# The Zeek host now runs a controller. Run an agent alongside it. It will
+# automatically connect to the controller. We need to provide a different
+# Broker::default_port since the existing Supervisor already listens on that
+# one.
+docker_exec -d -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::name=instance-1 \
     Broker::default_port=10000/tcp
 
