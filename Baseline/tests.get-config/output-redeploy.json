@@ -2,9 +2,7 @@
 {
   "instances": [
     {
-      "addr": "127.0.0.1",
-      "name": "instance-1",
-      "port": 2151
+      "name": "instance-1"
     }
   ],
   "nodes": [
