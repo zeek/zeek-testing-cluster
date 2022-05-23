@@ -15,7 +15,13 @@ run() {
     local ret="$2"
     local name="$3"
 
-    { eval "$cmd"; } >output.$name 2>stderr.$name
+    # Save outputs if caller requested it
+    if [ -n "$name" ]; then
+        { eval "$cmd"; } >output.$name 2>stderr.$name
+    else
+        eval "$cmd"
+    fi
+
     [ $? -eq $ret ] || fail "[$name] '$cmd' did not exit with $ret"
 }
 
