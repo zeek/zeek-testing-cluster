@@ -19,11 +19,8 @@
 docker_populate singlehost
 docker_compose_up
 
-# The Zeek host now runs a controller. Run an agent alongside it.
-docker_exec controller mkdir /tmp/agent
-docker_exec -d -w /tmp/agent -- controller zeek -j site/testing/agent.zeek \
-    Management::Agent::name=instance-1 \
-    Broker::default_port=10000/tcp
+# The Zeek host now runs a controller named "controller" and an agent named
+# "instance-1" that connects to it, with default settings.
 
 zeek_client get-config >output.error 2>&1 \
     && fail "zeek-client get-config without deployment did not fail"
@@ -32,7 +29,7 @@ zeek_client get-config >output.error 2>&1 \
 
 zeek_client set-config - <<EOF
 [instances]
-instance-1 = 127.0.0.1:2151
+instance-1
 
 [manager]
 instance = instance-1

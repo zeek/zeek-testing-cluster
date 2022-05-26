@@ -8,11 +8,16 @@
 . $SCRIPTS/docker-setup
 
 docker_populate singlehost
-docker_compose_up
 
-# The Zeek host now runs a controller. Run two agents alongside it
-# that the controller connects to. Run them out of separate directories
-# to segregate logs.
+# Configure the agents to listen only:
+cat >>zeekscripts/agent-local.zeek <<EOF
+redef Management::Agent::controller = [\$address="0.0.0.0", \$bound_port=0/unknown];
+EOF
+
+ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
+
+# Run two agents alongside the controller that wait for the controller to connect.
+
 docker_exec controller mkdir /tmp/agent1 /tmp/agent2
 docker_exec -d -w /tmp/agent1 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::name=instance-1 \

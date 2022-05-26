@@ -1,4 +1,4 @@
-FROM fedora:34
+FROM fedora:35
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 
 # Packages for future dev usage (building plugins, running Zeek itself, etc)
@@ -9,10 +9,10 @@ ARG zkgrpms="python3-GitPython python3-semantic_version"
 ARG toolrpms="bind-utils findutils procps-ng net-tools telnet psmisc"
 
 ENV PATH "/usr/local/zeek/bin:${PATH}"
+ENV PYTHONPATH "/usr/local/zeek/lib/zeek/python:${PYTHONPATH}"
 
 RUN dnf install -y $devrpms $zkgrpms $toolrpms && dnf clean all
-RUN mkdir -p /var/log/zeek/mgmt /var/log/zeek/cluster
 
-WORKDIR /var/log/zeek
+WORKDIR /usr/local/zeek/var/lib
 
 COPY --from=zeektest-build /usr/local/zeek /usr/local/zeek

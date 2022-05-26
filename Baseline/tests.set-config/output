@@ -3,10 +3,15 @@
   "errors": [],
   "results": {
     "instance-1": {
+      "controller": {
+        "cluster_role": null,
+        "mgmt_role": "CONTROLLER",
+        "port": 2151,
+        "state": "RUNNING"
+      },
       "instance-1": {
         "cluster_role": null,
         "mgmt_role": "AGENT",
-        "port": 2151,
         "state": "RUNNING"
       },
       "logger-01": {

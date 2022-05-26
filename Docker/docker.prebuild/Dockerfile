@@ -1,9 +1,9 @@
-FROM fedora:34
+FROM fedora:35
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 
 # Requirements for the Zeek build
-RUN dnf install -y bison ccache cmake gcc gcc-c++ make python3 flex git \
-    libpcap-devel openssl-devel python3-devel swig zlib-devel
+RUN dnf install -y bison ccache cmake gcc gcc-c++ make python3 findutils \
+    flex git libpcap-devel openssl-devel python3-devel swig zlib-devel
 
 # Zeek-related locations in our image
 ENV ZEEK_DIR=/zeek

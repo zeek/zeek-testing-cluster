@@ -8,10 +8,12 @@
 . $SCRIPTS/test-helpers
 
 docker_populate singlehost
-docker_compose_up
 
-# Run two agents alongside the controller. The controller will connect
-# to the agents, via the config we deploy below.
+# Run a "bare" controller without agents:
+
+ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
+
+# Run two agents alongside, both connecting to the controller:
 
 docker_exec controller mkdir /tmp/agent1 /tmp/agent2
 
@@ -19,6 +21,8 @@ docker_exec -d -w /tmp/agent1 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::name=instance-1 \
     Broker::default_port=10000/tcp
 
+# The second agent still needs a listening port because cluster nodes created by
+# agents always peer with them.
 docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::default_port=2152/tcp \
     Management::Agent::name=instance-2 \
@@ -36,8 +40,8 @@ btest-diff output.nocluster
 
 zeek_client set-config - <<EOF
 [instances]
-instance-1 = 127.0.0.1:2151
-instance-2 = 127.0.0.1:2152
+instance-1
+instance-2
 
 [manager]
 instance = instance-1

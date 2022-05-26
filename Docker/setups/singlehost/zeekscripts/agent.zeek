@@ -1,5 +1,7 @@
 @load policy/frameworks/management/agent
-@load ./agent-local.zeek
 
-redef Management::Agent::directory = "/var/log/zeek/mgmt";
-redef Management::Agent::cluster_directory = "/var/log/zeek/cluster";
+redef Management::Agent::name = "instance-1";
+
+# This gives tests a way to overide settings:
+@load ./agent-local.zeek
+@load ./local.zeek

@@ -1,5 +1,6 @@
 # This test verifies that the controller times out "dangling" client requests
 # and sends a corresponding timeout response event back to the client.
+# This only requires a controller, no agents.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
@@ -8,11 +9,9 @@
 . $SCRIPTS/docker-setup
 . $SCRIPTS/test-helpers
 
-docker_populate singlehost
+ZEEK_ENTRYPOINT=controller.zeek docker_populate singlehost
 
-# Adjust timeouts to speed up the overall testing. There seems to be a lot of
-# variability in the timing, so it's good not to tighten too much. XXX Worth
-# investigating.
+# Adjust timeouts to speed up the overall testing.
 
 cat >>zeekscripts/controller-local.zeek <<EOF
 redef Management::Request::timeout_interval = 1sec;
