@@ -75,7 +75,7 @@ docker_exec() {
     shift
     local command="$@"
 
-    docker exec ${args[@]} ${testname}_${container}_1 $command
+    docker exec ${args[@]} ${testname}_${container}_1 bash -c "$command"
 }
 
 zeek_client() {

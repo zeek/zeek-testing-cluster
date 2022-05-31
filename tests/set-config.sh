@@ -14,7 +14,7 @@ docker_compose_up
 # The Zeek host now runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings.
 
-zeek_client set-config - <<EOF
+zeek_client set-config - >output <<EOF
 [instances]
 instance-1
 
@@ -40,7 +40,3 @@ interface = lo
 EOF
 
 wait_for_all_nodes_running || fail "nodes did not end up running"
-
-# Retrieve the cluster nodes and strip the PIDs, since they
-# change from run to run.
-zeek_client get-nodes | jq 'del(.results[][].pid)' >output
