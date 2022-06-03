@@ -25,6 +25,21 @@ run() {
     [ $? -eq $ret ] || fail "[$name] '$cmd' did not exit with $ret"
 }
 
+# Checks current instance state via "zeek-client get-instances" until it sees
+# the requested number of connected agents, or 10 seconds have passed. Exits
+# with 0 once the instances are seen, 1 when the timeout hits or other problems
+# arise.
+wait_for_instances() {
+    local instances="$1"
+
+    for i in $(seq 10); do
+        [ $(zeek_client get-instances | jq 'keys|length') -eq $instances ] && return 0
+        sleep 1
+    done
+
+    return 1
+}
+
 # Checks current cluster node state via "zeek-client get-nodes" until nodes get
 # reported and all nodes are in running state, or 10 seconds have passed. Exits
 # with 0 once all nodes are running, 1 when the timeout is hit or other problems
