@@ -3,9 +3,11 @@
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
-# @TEST-EXEC: btest-diff output
+# @TEST-EXEC: btest-diff output.pre-config
+# @TEST-EXEC: btest-diff output.post-config
 
 . $SCRIPTS/docker-setup
+. $SCRIPTS/test-helpers
 
 docker_populate singlehost
 ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
@@ -24,10 +26,17 @@ docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::default_port=2152/tcp \
     Management::Agent::name=instance-2 Broker::default_port=10001/tcp
 
+# Give both agents time to connect to the controller:
+wait_for_instances 2
+
+# Canonicalize the agents' ephemeral ports for baselining:
+zeek_client get-instances | jq '.[].port = "xxx"' >output.pre-config
+
+# This should have no effect on the reported instances.
 zeek_client set-config - <<EOF
 [instances]
 instance-1
 instance-2
 EOF
 
-zeek_client get-instances >output
+zeek_client get-instances | jq '.[].port = "xxx"' >output.post-config
