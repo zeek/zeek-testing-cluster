@@ -1,9 +1,30 @@
-FROM fedora:35
+FROM debian:bullseye-slim
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 
-# Requirements for the Zeek build
-RUN dnf install -y bison ccache cmake gcc gcc-c++ make python3 findutils \
-    flex git libpcap-devel openssl-devel python3-devel swig zlib-devel
+# Configure system for build.
+RUN apt-get -q update \
+ && apt-get install -q -y --no-install-recommends \
+     bind9 \
+     bison \
+     ccache \
+     cmake \
+     flex \
+     g++ \
+     gcc \
+     libfl2 \
+     libfl-dev \
+     libmaxminddb-dev \
+     libpcap-dev \
+     libssl-dev \
+     libz-dev \
+     make \
+     python3-minimal \
+     python3.9-dev \
+     swig \
+     ninja-build \
+     python3-pip \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 # Zeek-related locations in our image
 ENV ZEEK_DIR=/zeek

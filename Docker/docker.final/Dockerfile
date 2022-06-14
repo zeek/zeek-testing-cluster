@@ -1,17 +1,24 @@
-FROM fedora:35
+FROM debian:bullseye-slim
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
-
-# Packages for future dev usage (building plugins, running Zeek itself, etc)
-ARG devrpms="cmake gcc gcc-c++ libpcap make"
-# Packages for zkg
-ARG zkgrpms="python3-GitPython python3-semantic_version"
-# Packages for additional tooling
-ARG toolrpms="bind-utils findutils procps-ng net-tools telnet psmisc"
 
 ENV PATH "/usr/local/zeek/bin:${PATH}"
 ENV PYTHONPATH "/usr/local/zeek/lib/zeek/python:${PYTHONPATH}"
 
-RUN dnf install -y $devrpms $zkgrpms $toolrpms && dnf clean all
+# This installs the same set of packages we also provide in the official Docker image.
+RUN apt-get -q update \
+ && apt-get install -q -y --no-install-recommends \
+     ca-certificates \
+     git \
+     libmaxminddb0 \
+     libpython3.9 \
+     libpcap0.8 \
+     libssl1.1 \
+     libz1 \
+     python3-minimal \
+     python3-git \
+     python3-semantic-version \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /usr/local/zeek/var/lib
 
