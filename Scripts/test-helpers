@@ -25,6 +25,20 @@ run() {
     [ $? -eq $ret ] || fail "[$name] '$cmd' did not exit with $ret"
 }
 
+# Try a given command repeatedly for up to 5 seconds until it succeeds.
+# Returns with success if so, and failure if the command always failed.
+try_until() {
+    local reps=10
+    local delay=0.5
+
+    for i in $(seq $reps); do
+        "$@" && return 0
+        sleep $delay
+    done
+
+    return 1
+}
+
 # Checks current instance state via "zeek-client get-instances" until it sees
 # the requested number of connected agents, or 10 seconds have passed. Exits
 # with 0 once the instances are seen, 1 when the timeout hits or other problems
