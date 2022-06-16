@@ -3,7 +3,7 @@
   "errors": [
     {
       "error": "no instances connected",
-      "source": ""
+      "source": null
     }
   ],
   "results": {}
