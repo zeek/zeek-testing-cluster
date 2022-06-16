@@ -1,9 +1,11 @@
 # This test verifies that the controller complains about configs in which
-# multiple nodes request the same port, and complains only once per instance.
+# multiple nodes request the same port, complains only once per instance, and
+# does so the same way via set-config and deploy-config.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
-# @TEST-EXEC: btest-diff output
+# @TEST-EXEC: btest-diff output.set-config
+# @TEST-EXEC: btest-diff output.deploy-config
 
 . $SCRIPTS/docker-setup
 . $SCRIPTS/test-helpers
@@ -17,7 +19,8 @@ docker_compose_up
 # Don't exit on error since we want to examine exit codes.
 set +e
 
-zeek_client set-config - >output <<EOF
+print_config() {
+    cat <<EOF
 [instances]
 instance-1
 instance-2
@@ -45,7 +48,12 @@ port = 5000
 role = worker
 interface = eth0
 EOF
+}
 
+print_config | zeek_client set-config - >output.set-config
 [ $? -ne 0 ] || fail "set-config succeeded on invalid configuration"
+
+print_config | zeek_client deploy-config - >output.deploy-config
+[ $? -ne 0 ] || fail "deploy-config succeeded on invalid configuration"
 
 true
