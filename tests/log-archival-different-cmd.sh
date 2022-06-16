@@ -55,8 +55,8 @@ docker_compose_up
 controller_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends procps"
 
 # Deploy cluster
-cat $FILES/config.ini | zeek_client set-config - \
-    || fail "set-config did not succeed"
+cat $FILES/config.ini | zeek_client deploy-config - \
+    || fail "deploy-config did not succeed"
 
 # Wait a bit until logs appear:
 try_until controller_cmd "test -f /usr/local/zeek/var/lib/nodes/logger/test.log" \

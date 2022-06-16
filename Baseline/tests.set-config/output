@@ -2,21 +2,24 @@
 {
   "errors": [],
   "results": {
-    "logger-01": {
-      "instance": "instance-1",
-      "success": true
-    },
-    "manager": {
-      "instance": "instance-1",
-      "success": true
-    },
-    "worker-01": {
-      "instance": "instance-1",
-      "success": true
-    },
-    "worker-02": {
-      "instance": "instance-1",
-      "success": true
+    "id": "xxx",
+    "nodes": {
+      "logger-01": {
+        "instance": "instance-1",
+        "success": true
+      },
+      "manager": {
+        "instance": "instance-1",
+        "success": true
+      },
+      "worker-01": {
+        "instance": "instance-1",
+        "success": true
+      },
+      "worker-02": {
+        "instance": "instance-1",
+        "success": true
+      }
     }
   }
 }

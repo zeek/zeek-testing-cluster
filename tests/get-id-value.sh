@@ -38,7 +38,7 @@ btest-diff output.nocluster
 
 # Deploy a small cluster across the two agents.
 
-zeek_client set-config - <<EOF
+zeek_client deploy-config - <<EOF
 [instances]
 instance-1
 instance-2
@@ -64,7 +64,7 @@ role = worker
 interface = lo
 EOF
 
-[ $? -eq 0 ] || fail "zeek-client set-config failed"
+[ $? -eq 0 ] || fail "zeek-client deploy-config failed"
 
 wait_for_all_nodes_running || fail "nodes did not end up running"
 

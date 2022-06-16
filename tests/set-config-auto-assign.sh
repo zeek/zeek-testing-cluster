@@ -39,7 +39,4 @@ role = worker
 interface = eth0
 EOF
 
-wait_for_all_nodes_running || fail "nodes did not end up running"
-
-# Remove PIDs from the nodes, and show only Zeek cluster nodes:
-zeek_client get-nodes | jq 'del(.results[][].pid).results[] | with_entries(select(.value.cluster_role != null))' >output
+zeek_client get-config --as-json | jq '.id = "xxx"' >output

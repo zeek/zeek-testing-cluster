@@ -33,7 +33,7 @@ wait_for_instances 2
 zeek_client get-instances | jq '.[].port = "xxx"' >output.pre-config
 
 # This should have no effect on the reported instances.
-zeek_client set-config - <<EOF
+zeek_client deploy-config - <<EOF
 [instances]
 instance-1
 instance-2

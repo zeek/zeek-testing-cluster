@@ -1,4 +1,4 @@
-# This test verifies that the client gets an error response when deploying a
+# This test verifies that the client gets an error response when uploading a
 # configuration missing ports, with port auto-allocation disabled.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements

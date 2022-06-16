@@ -23,7 +23,7 @@ docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
 # Give both agents time to connect to the controller:
 wait_for_instances 2
 
-zeek_client set-config - <<EOF
+zeek_client deploy-config - <<EOF
 [manager]
 instance = instance-1
 role = manager
