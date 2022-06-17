@@ -1,6 +1,7 @@
 #! /usr/bin/env bash
 
 [ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
+[ "$TEST_FAILED" -eq 1 ] && [ -n "$TEST_SKIP_DOCKER_TEARDOWN_ON_FAILURE" ] && exit 0
 
 testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
 
