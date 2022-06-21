@@ -6,7 +6,7 @@
     "nodes": {
       "logger": {
         "instance": "instance-1",
-        "stderr": "error in /usr/local/zeek/share/zeek/base/frameworks/cluster/./nodes/logger.zeek, line 53: unknown identifier EEEK, at or near \"EEEK\"\ninternal error in /usr/local/zeek/share/zeek/base/frameworks/cluster/./nodes/logger.zeek, line 53: Failed to find variable named: Spicy::codegen_debug",
+        "stderr": "unknown identifier EEEK",
         "stdout": "",
         "success": false
       },

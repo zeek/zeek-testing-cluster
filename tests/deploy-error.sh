@@ -20,7 +20,11 @@ docker_exec -i -- controller 'echo EEEK >>  $(zeek-config --script_dir)/base/fra
 # Don't exit on error from now on since we want to examine exit codes.
 set +e
 
-# Deploy a small cluster and collect output:
-cat $FILES/config.ini | zeek_client deploy-config - | jq '.results.id = "xxx"' >output
+# Deploy a small cluster and collect output. Normalize out the config UUID, and
+# replace the stderr string (which has a lot of detail, making it bad for
+# baselining) with something simpler:
+cat $FILES/config.ini | zeek_client deploy-config - \
+    | jq '.results.id = "xxx"' \
+    | jq '.results.nodes.logger.stderr |= sub(".+unknown identifier EEEK.+"; "unknown identifier EEEK"; "m")' >output
 
 [ $? -ne 0 ] || fail "deploy-config should have failed"
