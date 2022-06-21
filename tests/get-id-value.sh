@@ -10,11 +10,9 @@
 docker_populate singlehost
 
 # Run a "bare" controller without agents:
-
 ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
 
 # Run two agents alongside, both connecting to the controller:
-
 docker_exec controller mkdir /tmp/agent1 /tmp/agent2
 
 docker_exec -d -w /tmp/agent1 -- controller zeek -j site/testing/agent.zeek \
@@ -29,7 +27,6 @@ docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
     Broker::default_port=10001/tcp
 
 # Don't exit on error since we want to examine exit codes.
-
 set +e
 
 # Attempt an ID retrieval without a deployed cluster. This should fail.
