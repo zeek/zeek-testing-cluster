@@ -44,10 +44,10 @@ try_until() {
 # with 0 once the instances are seen, 1 when the timeout hits or other problems
 # arise.
 wait_for_instances() {
-    local instances="$1"
+    local num_instances="$1"
 
     for i in $(seq 10); do
-        [ $(zeek_client get-instances | jq 'keys|length') -eq $instances ] && return 0
+        [ $(zeek_client get-instances | jq 'keys|length') -eq $num_instances ] && return 0
         sleep 1
     done
 
