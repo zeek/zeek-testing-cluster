@@ -113,3 +113,25 @@ wait_for_all_nodes_running() {
     [ $errexit == true ] && set -e
     return $ret
 }
+
+assert_get_nodes_pids() {
+    local out1="$1"
+    local out2="$2"
+    local op="$3"
+    local node="$4"
+
+    # The jq filter combines all of the individual nodes objects into one
+    # object, from which we then query the requested one. This ensures we
+    # get one result, not additional null ones for multi-instance configs.
+    local pid1=$(echo $out1 | jq "[.results|.[]] | add | .\"$node\".pid" || true)
+    local pid2=$(echo $out2 | jq "[.results|.[]] | add | .\"$node\".pid" || true)
+
+    [ -z "$pid1" ] && fail "PID for $node unavailable in old input"
+    [ -z "$pid2" ] && fail "PID for $node unavailable in new input"
+
+    if [ $op == equal ]; then
+        [ "$pid1" -eq "$pid2" ] || fail "PIDs for $node differ: $pid1/$pid2"
+    else
+        [ "$pid1" -ne "$pid2" ] || fail "PIDs for $node match: $pid1/$pid2"
+    fi
+}
