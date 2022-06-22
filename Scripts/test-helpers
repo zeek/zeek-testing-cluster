@@ -93,10 +93,13 @@ wait_for_all_nodes_running() {
             # Count how often that is "RUNNING" vs something else.
             zeek_client get-nodes \
                 | jq -r '.results[][].state' \
-                | awk "/RUNNING/  { r += 1 }
-                   !/RUNNING/ { o += 1 }
-                   END        { if ( r > 0 && o == 0 && ( $nodes == 0 || $nodes == r ) ) { exit 0 };
-                                exit 1 }"
+                | awk "BEGIN  { r = 0; o = 0 }
+                      /RUNNING/  { r += 1 }
+                      !/RUNNING/ { o += 1 }
+                      END        { if ( $nodes == 0 ) { printf \"waiting for all nodes running: running %s, other %s\n\", r, o; }
+                                   else { printf \"waiting for $nodes nodes: running %s, other %s\n\", r, o; }
+                                   if ( r > 0 && o == 0 && ( $nodes == 0 || $nodes == r ) ) { exit 0 };
+                                   exit 1 }"
 
             [ $? -eq 0 ] && return 0
             sleep 1
