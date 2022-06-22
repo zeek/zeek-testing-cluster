@@ -1,9 +1,9 @@
-# This test verifies that the client can first set a cluster configuration, then
-# deploy it.
+# This test verifies that the client can first upload a cluster configuration,
+# then deploy it.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
-# @TEST-EXEC: btest-diff output.set-config
+# @TEST-EXEC: btest-diff output.stage-config
 # @TEST-EXEC: btest-diff output.deploy
 
 . $SCRIPTS/docker-setup
@@ -15,7 +15,7 @@ docker_compose_up
 # The Zeek host now runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings.
 
-zeek_client set-config - <<EOF >output
+zeek_client stage-config - <<EOF >output
 [instances]
 instance-1
 
@@ -38,7 +38,7 @@ role = worker
 interface = lo
 EOF
 
-cat output | jq '.results.id = "xxx"' >output.set-config
+cat output | jq '.results.id = "xxx"' >output.stage-config
 cid_set_config=$(cat output | jq -r '.results.id')
 
 zeek_client deploy >output

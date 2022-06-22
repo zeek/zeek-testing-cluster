@@ -1,5 +1,5 @@
 # This test verifies the behavior of the client's get-config command around
-# separate set-config and subsequent deployment.
+# separate stage-config and subsequent deployment.
 
 # @TEST-REQUIRES: $SCRIPTS/docker-requirements
 # @TEST-EXEC: bash %INPUT
@@ -27,7 +27,7 @@ zeek_client get-config >output-preupload-staged.error 2>&1 \
 zeek_client get-config --deployed >output-preupload-deployed.error 2>&1 \
     && fail "zeek-client get-config --deployed without upload did not fail"
 
-zeek_client set-config - <<EOF
+zeek_client stage-config - <<EOF
 [instances]
 instance-1
 

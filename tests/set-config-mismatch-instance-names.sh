@@ -17,7 +17,7 @@ docker_compose_up
 # Don't exit on error since we want to examine exit codes.
 set +e
 
-zeek_client set-config - >output <<EOF
+zeek_client stage-config - >output <<EOF
 [instances]
 instance-1
 
@@ -31,6 +31,6 @@ role = worker
 interface = eth0
 EOF
 
-[ $? -ne 0 ] || fail "set-config succeeded on invalid configuration"
+[ $? -ne 0 ] || fail "stage-config succeeded on invalid configuration"
 
 true

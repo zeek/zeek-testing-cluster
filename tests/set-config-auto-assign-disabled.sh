@@ -23,7 +23,7 @@ docker_compose_up
 # Don't exit on error from now on since we want to examine exit codes.
 set +e
 
-zeek_client set-config - >output <<EOF
+zeek_client stage-config - >output <<EOF
 [instances]
 instance-1
 
