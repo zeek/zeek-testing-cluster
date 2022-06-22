@@ -1,9 +1,12 @@
 #! /usr/bin/env bash
 #
-# This script creates or updates the Docker image corresponding to the current
-# sources in the Zeek tree that has this tesuite hooked in. If it cannot find
-# any source files newer than the creation date of the zeektest image, it does
-# nothing. Otherwise it runs the build process, hopefully accelerated by a
+# This script ensures that we have a Docker image "zeektest:latest" to use in
+# this testsuite's docker-compose setup. When the testsuite is not part of a
+# Zeek source tree, we use the available Docker image, and are done. Otherwise,
+# this script creates or updates the Docker image corresponding to the current
+# sources in the Zeek tree that this testsuite clone resides in. If it cannot
+# find any source files newer than the creation date of the zeektest image, it
+# does nothing. Otherwise it runs the build process, trying to accelerate with a
 # cached build tree and/or ccache.
 
 # Various absolute paths
@@ -25,26 +28,33 @@ msg() {
     printf "$red$@$nc\n"
 }
 
-# If the Docker image doesn't exist yet, we obviously need to build it.
-docker images --format '{{.Repository}}:{{.Tag}}' | grep -q $docker_image || {
-    msg "Docker image $docker_image unavailable, building..."
-    do_build=yes
+have_docker_image() {
+    docker images --format '{{.Repository}}:{{.Tag}}' | grep -q $docker_image
 }
 
 # If we're running in Github CI, a zeektest:latest image must be available and
 # we're going to use it as-is. (It will have just been built.) If the image is
 # unavailable, something is wrong.
 if [[ -n "$GITHUB_ACTION" ]]; then
-     if [[ $do_build = yes ]]; then
-         msg "Docker image ${docker_image} unavailable in Github Action workflow, aborting..."
-         exit 1
-     fi
+    if ! have_docker_image; then
+        msg "Docker image ${docker_image} unavailable in Github Action workflow, aborting."
+        exit 1
+    fi
 
-     exit 0
+    exit 0
 fi
 
-# If we have the image, we still might need to refresh it if the sources have
-# changed.
+if have_docker_image && [[ ! -f $src_path/zeek-config.h.in ]]; then
+    msg "No source tree available, using existing ${docker_image}."
+    exit 0
+fi
+
+if ! have_docker_image; then
+    do_build=yes
+fi
+
+# With sources and a Docker image, we might need to refresh the image if the
+# sources have changed.
 if [[ $do_build = no ]]; then
     # Time in epoch seconds and fraction of the newest file in the sources. This
     # is a bit heuristic, but we exclude the default build tree this way.

@@ -1,6 +1,11 @@
 DIAG=diag.log
 BTEST=../../../auxil/btest/btest
 
+# Fall back to installed btest, for runs outside of a full Zeek tree.
+ifeq ("$(wildcard $(BTEST))","")
+	BTEST=btest
+endif
+
 make-verbose: docker test-verbose
 
 make-brief: docker test-brief
