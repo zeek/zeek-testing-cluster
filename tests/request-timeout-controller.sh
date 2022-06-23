@@ -10,14 +10,9 @@
 
 ZEEK_ENTRYPOINT=controller.zeek docker_populate singlehost
 
-cat >>etc/zeek-client.cfg <<EOF
-[client]
-request_timeout_secs = 3
-EOF
-
 docker_compose_up
 
 # Since the client receives no response, it reports the error to stderr. The
 # timeout makes zeek-client exit with error, so fail the test if it does not.
-zeek_client -c /usr/local/etc/zeek-client.cfg test-timeout 2>output \
+zeek_client --set client.request_timeout_secs=3 test-timeout 2>output \
     && fail "test-timeout should have failed" || true

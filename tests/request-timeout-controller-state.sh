@@ -21,14 +21,9 @@ redef Management::Request::timeout_interval = 1sec;
 redef table_expire_interval = 1sec;
 EOF
 
-cat >>etc/zeek-client.cfg <<EOF
-[client]
-request_timeout_secs = 15
-EOF
-
 docker_compose_up
 
 # The client does receive a response, indicating a controller-side timeout.
 # The client succeeds in this case, as it's the purpose of the test.
-zeek_client -c /usr/local/etc/zeek-client.cfg test-timeout --with-state >output \
+zeek_client --set client.request_timeout_secs=15 test-timeout --with-state >output \
     || fail "test-timeout failed"

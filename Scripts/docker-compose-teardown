@@ -1,8 +1,18 @@
 #! /usr/bin/env bash
 
-[ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
-
 testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
+
+# Preserve the controller's persistent state:
+controller=${testname}__controller_1
+if docker ps -a | grep -q $controller; then
+    mkdir -p controller/var
+    docker cp $controller:/usr/local/zeek/var/lib controller/var/lib
+    docker cp $controller:/usr/local/zeek/spool controller/spool
+    docker cp $controller:/usr/local/zeek/logs controller/logs
+fi
+
+[ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
+[ "$TEST_FAILED" -eq 1 ] && [ -n "$TEST_SKIP_DOCKER_TEARDOWN_ON_FAILURE" ] && exit 0
 
 if [ -z "$testname" ]; then
     echo "WARNING: btest teardown got no test name"

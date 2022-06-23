@@ -13,7 +13,7 @@ docker_compose_up
 # "instance-1" that connects to it, with default settings. Deploy a small
 # cluster:
 
-cat $FILES/config.ini | zeek_client set-config -
+cat $FILES/config.ini | zeek_client deploy-config -
 
 # Don't exit on error from now on since we want to examine exit codes.
 set +e
