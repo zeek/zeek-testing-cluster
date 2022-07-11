@@ -40,5 +40,7 @@ role = worker
 interface = eth0
 EOF
 
-zeek_client get-config --as-json | jq '.id = "xxx"' >output.staged
-zeek_client get-config --as-json --deployed | jq '.id = "xxx"' >output.deployed
+zeek_client get-config --as-json \
+    | tee output.zc.staged | jq '.id = "xxx"' >output.staged
+zeek_client get-config --as-json --deployed \
+    | tee output.zc.deployed | jq '.id = "xxx"' >output.deployed

@@ -30,7 +30,7 @@ docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
 wait_for_instances 2
 
 # Canonicalize the agents' ephemeral ports for baselining:
-zeek_client get-instances | jq '.[].port = "xxx"' >output.pre-config
+zeek_client get-instances | tee output.zc.pre-config | jq '.[].port = "xxx"' >output.pre-config
 
 # This should have no effect on the reported instances.
 zeek_client deploy-config - <<EOF
@@ -39,4 +39,4 @@ instance-1
 instance-2
 EOF
 
-zeek_client get-instances | jq '.[].port = "xxx"' >output.post-config
+zeek_client get-instances | tee output.zc.post-config | jq '.[].port = "xxx"' >output.post-config
