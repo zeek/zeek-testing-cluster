@@ -68,33 +68,33 @@ wait_for_all_nodes_running || fail "nodes did not end up running"
 # On to why we're here -- variations of "zeek-client get-id-value"
 
 # Retrieve a basic value that exists on all nodes:
-run "zeek_client get-id-value bits_per_uid | jq" 0 simple
+run "zeek_client get-id-value bits_per_uid" 0 simple
 btest-diff output.simple
 
 # Retrieve a variable that does not exist:
-run "zeek_client get-id-value this_is_not_defined | jq" 1 unknown
+run "zeek_client get-id-value this_is_not_defined" 1 unknown
 btest-diff output.unknown
 
 # Retrieve a thing that exists but is not a value:
-run "zeek_client get-id-value connection | jq" 1 noid
+run "zeek_client get-id-value connection" 1 noid
 btest-diff output.noid
 
 # Retrieve a more complex value:
-run "zeek_client get-id-value Log::active_streams | jq" 0 complex
+run "zeek_client get-id-value Log::active_streams" 0 complex
 btest-diff output.complex
 
 # Retrieve from a single, existing node:
-run "zeek_client get-id-value bits_per_uid manager | jq" 0 nodes-single
+run "zeek_client get-id-value bits_per_uid manager" 0 nodes-single
 btest-diff output.nodes-single
 
 # Retrieve from select existing nodes:
-run "zeek_client get-id-value bits_per_uid manager logger-01 | jq" 0 nodes-multiple
+run "zeek_client get-id-value bits_per_uid manager logger-01" 0 nodes-multiple
 btest-diff output.nodes-multiple
 
 # Retrieve from select nodes, including invalid ones
-run "zeek_client get-id-value bits_per_uid worker-02 worker-03 | jq" 1 nodes-mixed
+run "zeek_client get-id-value bits_per_uid worker-02 worker-03" 1 nodes-mixed
 btest-diff output.nodes-mixed
 
 # Retrieve from select nodes that do not exist at all
-run "zeek_client get-id-value bits_per_uid worker-03 worker-04 | jq" 1 nodes-invalid
+run "zeek_client get-id-value bits_per_uid worker-03 worker-04" 1 nodes-invalid
 btest-diff output.nodes-invalid
