@@ -22,7 +22,7 @@ set +e
 
 # The controller should see the instance and its Zeek nodes: an agent and the
 # controller. (Strip the PIDs, since they change from run to run.)
-zeek_client get-nodes | jq 'del(.results[][].pid)' >output.bare \
+zeek_client get-nodes | tee output.zc.bare | jq 'del(.results[][].pid)' >output.bare \
     || fail "get-nodes failed with connected instance"
 
 # Deploy a Zeek cluster and give its nodes time to come up:
@@ -30,4 +30,4 @@ cat $FILES/config.ini | zeek_client deploy-config -
 wait_for_all_nodes_running || fail "nodes did not end up running"
 
 # All nodes should now be there.
-zeek_client get-nodes | jq 'del(.results[][].pid)' >output.nodes
+zeek_client get-nodes | tee output.zc.nodes | jq 'del(.results[][].pid)' >output.nodes

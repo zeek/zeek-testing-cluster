@@ -38,4 +38,5 @@ EOF
 
 wait_for_all_nodes_running || fail "nodes did not end up running"
 
-zeek_client get-config --as-json --deployed | jq 'del(.id)' >output.json
+zeek_client get-config --as-json --deployed \
+    | tee output.zc.json | jq 'del(.id)' >output.json

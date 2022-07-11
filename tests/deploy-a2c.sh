@@ -44,7 +44,8 @@ wait_for_all_nodes_running || fail "nodes did not end up running"
 
 # Remove the id field (containing the deployed configuration's UUID),
 # so we can diff it.
-zeek_client get-config --as-json --deployed | jq 'del(.id)' >output.json
+zeek_client get-config --as-json --deployed \
+    | tee output.zc.json | jq 'del(.id)' >output.json
 
 # The INI format does not include the ID field.
 zeek_client get-config --deployed >output.ini

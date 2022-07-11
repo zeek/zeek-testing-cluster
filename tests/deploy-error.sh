@@ -24,6 +24,7 @@ set +e
 # replace the stderr string (which has a lot of detail, making it bad for
 # baselining) with something simpler:
 cat $FILES/config.ini | zeek_client deploy-config - \
+    | tee output.zc \
     | jq '.results.id = "xxx"' \
     | jq '.results.nodes.logger.stderr |= sub(".+unknown identifier EEEK.+"; "unknown identifier EEEK"; "m")' >output
 
