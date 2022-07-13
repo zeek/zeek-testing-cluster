@@ -27,7 +27,8 @@ if [ ! -f docker-compose.yml ]; then
     exit 0
 fi
 
-# Don't wait at all for clean container shutdown
-docker-compose -p ${testname}_ -f docker-compose.yml down -t 0
+# Grab the Docker logs and shut down.
+docker-compose -p ${testname}_ -f docker-compose.yml logs -t >docker-compose.logs
+docker-compose -p ${testname}_ -f docker-compose.yml down
 
 exit 0
