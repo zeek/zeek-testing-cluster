@@ -8,8 +8,6 @@
     "nodes": {
       "logger": {
         "instance": "instance-1",
-        "stderr": "unknown identifier EEEK",
-        "stdout": "",
         "success": false
       },
       "manager": {
