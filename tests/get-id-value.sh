@@ -7,6 +7,11 @@
 . $SCRIPTS/docker-setup
 . $SCRIPTS/test-helpers
 
+btest_diff() {
+    local input="$1"
+    btest-diff $input || fail "btest-diff failed on $input"
+}
+
 docker_populate singlehost
 
 # Run a "bare" controller without agents:
@@ -31,7 +36,7 @@ set +e
 
 # Attempt an ID retrieval without a deployed cluster. This should fail.
 run "zeek_client get-id-value bits_per_uid | jq" 1 nocluster
-btest-diff output.nocluster
+btest_diff output.nocluster
 
 # Deploy a small cluster across the two agents.
 
@@ -69,32 +74,32 @@ wait_for_all_nodes_running || fail "nodes did not end up running"
 
 # Retrieve a basic value that exists on all nodes:
 run "zeek_client get-id-value bits_per_uid" 0 simple
-btest-diff output.simple
+btest_diff output.simple
 
 # Retrieve a variable that does not exist:
 run "zeek_client get-id-value this_is_not_defined" 1 unknown
-btest-diff output.unknown
+btest_diff output.unknown
 
 # Retrieve a thing that exists but is not a value:
 run "zeek_client get-id-value connection" 1 noid
-btest-diff output.noid
+btest_diff output.noid
 
 # Retrieve a more complex value:
 run "zeek_client get-id-value Log::active_streams" 0 complex
-btest-diff output.complex
+btest_diff output.complex
 
 # Retrieve from a single, existing node:
 run "zeek_client get-id-value bits_per_uid manager" 0 nodes-single
-btest-diff output.nodes-single
+btest_diff output.nodes-single
 
 # Retrieve from select existing nodes:
 run "zeek_client get-id-value bits_per_uid manager logger-01" 0 nodes-multiple
-btest-diff output.nodes-multiple
+btest_diff output.nodes-multiple
 
 # Retrieve from select nodes, including invalid ones
 run "zeek_client get-id-value bits_per_uid worker-02 worker-03" 1 nodes-mixed
-btest-diff output.nodes-mixed
+btest_diff output.nodes-mixed
 
 # Retrieve from select nodes that do not exist at all
 run "zeek_client get-id-value bits_per_uid worker-03 worker-04" 1 nodes-invalid
-btest-diff output.nodes-invalid
+btest_diff output.nodes-invalid
