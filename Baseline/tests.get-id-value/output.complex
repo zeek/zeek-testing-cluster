@@ -91,7 +91,7 @@
       },
       "Management::Log::LOG": {
         "columns": null,
-        "path": "cluster-logger-01",
+        "path": "management-logger-01",
         "policy": "Management::Log::log_policy"
       },
       "Modbus::LOG": {
@@ -362,7 +362,7 @@
       },
       "Management::Log::LOG": {
         "columns": null,
-        "path": "cluster-manager",
+        "path": "management-manager",
         "policy": "Management::Log::log_policy"
       },
       "Modbus::LOG": {
@@ -633,7 +633,7 @@
       },
       "Management::Log::LOG": {
         "columns": null,
-        "path": "cluster-worker-01",
+        "path": "management-worker-01",
         "policy": "Management::Log::log_policy"
       },
       "Modbus::LOG": {
@@ -904,7 +904,7 @@
       },
       "Management::Log::LOG": {
         "columns": null,
-        "path": "cluster-worker-02",
+        "path": "management-worker-02",
         "policy": "Management::Log::log_policy"
       },
       "Modbus::LOG": {

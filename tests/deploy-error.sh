@@ -21,11 +21,14 @@ docker_exec -i -- controller 'echo EEEK >>  $(zeek-config --script_dir)/base/fra
 set +e
 
 # Deploy a small cluster and collect output. Normalize out the config UUID, and
-# replace the stderr string (which has a lot of detail, making it bad for
-# baselining) with something simpler:
+# remove any stdout/stderr strings. We'd ideally want to keep (and normalize)
+# those strings, but on rare occasion they're missing from the output due to
+# races in the processing of the Supervisor's node/stem pipes. We preserve
+# the raw output in output.zc for inspection.
 cat $FILES/config.ini | zeek_client deploy-config - \
     | tee output.zc \
     | jq '.results.id = "xxx"' \
-    | jq '.results.nodes.logger.stderr |= sub(".+unknown identifier EEEK.+"; "unknown identifier EEEK"; "m")' >output
+    | jq 'del(.results.nodes.logger.stderr)' \
+    | jq 'del(.results.nodes.logger.stdout)' >output
 
-[ $? -ne 0 ] || fail "deploy-config should have failed"
+[ ${PIPESTATUS[1]} -ne 0 ] || fail "deploy-config should have failed"

@@ -2,7 +2,7 @@
 {
   "errors": [
     {
-      "error": "no instances connected",
+      "error": "no cluster deployed",
       "source": null
     }
   ],
