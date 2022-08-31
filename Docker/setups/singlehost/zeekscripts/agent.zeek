@@ -8,6 +8,10 @@ redef Management::Agent::name = "instance-1";
 redef Management::Supervisor::print_stdout = T;
 redef Management::Supervisor::print_stderr = T;
 
-# This gives tests a way to overide settings:
+# This gives tests a way to customize the agent ...
+@if ( getenv("ZEEK_MANAGEMENT_NODE") == "AGENT" )
 @load ./agent-local.zeek
+@endif
+
+# ... and to customize globally.
 @load ./local.zeek

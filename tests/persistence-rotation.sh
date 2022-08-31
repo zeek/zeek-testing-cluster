@@ -12,7 +12,7 @@
 docker_populate singlehost
 
 # Speed up log rotation
-cat >>zeekscripts/agent-local.zeek <<EOF
+cat >>zeekscripts/local.zeek <<EOF
 redef Log::default_rotation_interval = 1 secs;
 EOF
 

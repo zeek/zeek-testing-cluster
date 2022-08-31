@@ -8,6 +8,10 @@ redef Management::Controller::name = "controller";
 redef Management::Supervisor::print_stdout = T;
 redef Management::Supervisor::print_stderr = T;
 
-# This gives tests a way to overide settings:
+# This gives tests a way to customize the controller ...
+@if ( getenv("ZEEK_MANAGEMENT_NODE") == "CONTROLLER" )
 @load ./controller-local.zeek
+@endif
+
+# ... and to customize globally.
 @load ./local.zeek
