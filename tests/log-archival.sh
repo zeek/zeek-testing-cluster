@@ -13,6 +13,8 @@ docker_populate singlehost
 
 # Expand cluster so it periodically logs a message to a new test.log.
 cat >>zeekscripts/local.zeek <<EOF
+@load base/frameworks/cluster
+
 @if ( Cluster::local_node_type() == Cluster::MANAGER || Cluster::local_node_type() == Cluster::LOGGER )
 
 module Test;
