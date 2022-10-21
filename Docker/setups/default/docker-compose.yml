@@ -18,6 +18,7 @@ x-zeek-agent: &ZEEK_AGENT
 x-zeek-controller: &ZEEK_CONTROLLER
   command: /usr/local/zeek/bin/zeek -j site/testing/controller.zeek
   ports:
+    - "2149"
     - "2150"
 
 services:

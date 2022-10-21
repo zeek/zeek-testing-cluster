@@ -12,6 +12,7 @@ x-zeek-controller: &ZEEK_CONTROLLER
     - ZEEK_MANAGEMENT_STATE_DIR
     - ZEEK_MANAGEMENT_TESTING
   ports:
+    - "2149"
     - "2150"
   hostname: controller
   volumes:

@@ -85,10 +85,15 @@ docker_exec() {
 }
 
 zeek_client() {
-    docker_exec -i -- client zeek-client -c /usr/local/etc/zeek-client.cfg --controller controller "$@"
+    docker_exec -i -- client zeek-client -c /usr/local/etc/zeek-client.cfg $TEST_ZEEK_CLIENT_ARGS "$@"
 }
 
 # Run a command in the controller container.
 controller_cmd() {
     docker_exec -i -- controller "$@"
+}
+
+# Run a command in the client container.
+client_cmd() {
+    docker_exec -i -- client "$@"
 }
