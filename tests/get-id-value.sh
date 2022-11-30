@@ -14,6 +14,27 @@ btest_diff() {
 
 docker_populate singlehost
 
+# Set GetIdValuesTest::log_streams with the Log::Stream for conn.log and
+# dns.log for querying through via zeek_client.
+cat >>zeekscripts/local.zeek <<EOF
+module GetIdValuesTest;
+
+export {
+    global log_streams: table[Log::ID] of Log::Stream;
+}
+
+event zeek_init() &priority=-1000
+	{
+@ifdef ( Conn::LOG )
+	log_streams[Conn::LOG] = Log::active_streams[Conn::LOG];
+@endif
+
+@ifdef ( DNS::LOG )
+	log_streams[DNS::LOG] = Log::active_streams[DNS::LOG];
+@endif
+	}
+EOF
+
 # Run a "bare" controller without agents:
 ZEEK_ENTRYPOINT=controller.zeek docker_compose_up
 
@@ -85,7 +106,7 @@ run "zeek_client get-id-value connection" 1 noid
 btest_diff output.noid
 
 # Retrieve a more complex value:
-run "zeek_client get-id-value Log::active_streams" 0 complex
+run "zeek_client get-id-value GetIdValuesTest::log_streams" 0 complex
 btest_diff output.complex
 
 # Retrieve from a single, existing node:
