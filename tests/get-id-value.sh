@@ -14,25 +14,46 @@ btest_diff() {
 
 docker_populate singlehost
 
-# Set GetIdValuesTest::log_streams with the Log::Stream for conn.log and
-# dns.log for querying through via zeek_client.
-cat >>zeekscripts/local.zeek <<EOF
+# Populate GetIdValuesTest::duped_streams with streams for conn.log and
+# dns.log for querying via zeek_client. We use our own Stream type here
+# and limit to stable logs as to avoid ripple effects from changes in the
+# base scripts like extending the Stream record or adding/removing logs.
+cat >>zeekscripts/local.zeek << 'EOF'
 module GetIdValuesTest;
 
 export {
-    global log_streams: table[Log::ID] of Log::Stream;
+    # Create our own stream type
+    type Stream: record {
+        columns: any;
+        ev: any &optional;
+        path: string &optional;
+        policy: Log::PolicyHook &optional;
+    };
+
+    global dup_stream: function(s: Log::Stream): Stream;
+
+    global duped_streams: table[Log::ID] of Stream;
 }
 
+function dup_stream(s: Log::Stream): Stream
+    {
+    local dup = Stream($columns=s$columns);
+    if ( s?$ev ) dup$ev = s$ev;
+    if ( s?$path ) dup$path = s$path;
+    if ( s?$policy ) dup$policy = s$policy;
+    return dup;
+    }
+
 event zeek_init() &priority=-1000
-	{
+    {
 @ifdef ( Conn::LOG )
-	log_streams[Conn::LOG] = Log::active_streams[Conn::LOG];
+    duped_streams[Conn::LOG] = dup_stream(Log::active_streams[Conn::LOG]);
 @endif
 
 @ifdef ( DNS::LOG )
-	log_streams[DNS::LOG] = Log::active_streams[DNS::LOG];
+    duped_streams[DNS::LOG] = dup_stream(Log::active_streams[DNS::LOG]);
 @endif
-	}
+    }
 EOF
 
 # Run a "bare" controller without agents:
@@ -106,7 +127,7 @@ run "zeek_client get-id-value connection" 1 noid
 btest_diff output.noid
 
 # Retrieve a more complex value:
-run "zeek_client get-id-value GetIdValuesTest::log_streams" 0 complex
+run "zeek_client get-id-value GetIdValuesTest::duped_streams" 0 complex
 btest_diff output.complex
 
 # Retrieve from a single, existing node:
