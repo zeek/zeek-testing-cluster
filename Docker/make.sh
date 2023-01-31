@@ -15,8 +15,8 @@ src_path=$(cd $dir/../../../.. && pwd)
 ccache_path=$dir/ccache
 build_path=$dir/build
 
-# The name of the final Docker image. Note: this matches the image name used by
-# the Docker image-building Github action (docker.yml).
+# The name of the final Docker image. Note: this must match the image name
+# used by the CI image-building process.
 docker_image=zeektest:latest
 
 # Whether we need to (re-)build the image
@@ -32,12 +32,12 @@ have_docker_image() {
     docker images --format '{{.Repository}}:{{.Tag}}' | grep -q $docker_image
 }
 
-# If we're running in Github CI, a zeektest:latest image must be available and
+# If we're running in CI, a zeektest:latest image must be available and
 # we're going to use it as-is. (It will have just been built.) If the image is
 # unavailable, something is wrong.
-if [[ -n "$GITHUB_ACTION" ]]; then
+if [[ -n "$GITHUB_ACTION" || -n "$CIRRUS_CI" ]]; then
     if ! have_docker_image; then
-        msg "Docker image ${docker_image} unavailable in Github Action workflow, aborting."
+        msg "Docker image ${docker_image} unavailable in CI, aborting."
         exit 1
     fi
 
