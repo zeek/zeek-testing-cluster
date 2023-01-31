@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+#
+# A zeek-client output filter for get-nodes and related commands that filters
+# stdin to stdout as follows:
+#
+# - removes .pid entries, since they will differ in every run
+#
+# - normalizes cluster node states PENDING and RUNNING to <canonified>, for
+#   tests that do not care which of those two states a node is in.
+
+jq 'del(.results[][].pid) | .results[][] |= if (.state == "PENDING" or .state == "RUNNING") then (.state = "<canonified>") else . end'

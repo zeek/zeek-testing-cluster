@@ -63,4 +63,5 @@ wait_for_all_nodes_running || fail "nodes did not end up running"
 # Remove PIDs from the nodes, and show only Zeek cluster nodes:
 zeek_client get-nodes \
     | tee output.zc \
-    | jq 'del(.results[][].pid).results[] | with_entries(select(.value.cluster_role != null))' >output
+    | $SCRIPTS/jq-canonify-nodestate \
+    | jq '.results[] | with_entries(select(.value.cluster_role != null))' >output

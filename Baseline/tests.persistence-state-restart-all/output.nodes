@@ -7,29 +7,29 @@
         "cluster_role": null,
         "mgmt_role": "CONTROLLER",
         "port": 2151,
-        "state": "RUNNING"
+        "state": "<canonified>"
       },
       "instance-1": {
         "cluster_role": null,
         "mgmt_role": "AGENT",
-        "state": "RUNNING"
+        "state": "<canonified>"
       },
       "logger": {
         "cluster_role": "LOGGER",
         "mgmt_role": null,
         "port": 5001,
-        "state": "RUNNING"
+        "state": "<canonified>"
       },
       "manager": {
         "cluster_role": "MANAGER",
         "mgmt_role": null,
         "port": 5000,
-        "state": "RUNNING"
+        "state": "<canonified>"
       },
       "worker": {
         "cluster_role": "WORKER",
         "mgmt_role": null,
-        "state": "RUNNING"
+        "state": "<canonified>"
       }
     }
   }
