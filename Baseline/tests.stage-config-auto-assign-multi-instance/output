@@ -4,25 +4,25 @@
     "cluster_role": "LOGGER",
     "mgmt_role": null,
     "port": 2201,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "manager": {
     "cluster_role": "MANAGER",
     "mgmt_role": null,
     "port": 2200,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "proxy-01": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
     "port": 2203,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "proxy-02": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
     "port": 2204,
-    "state": "RUNNING"
+    "state": "<canonified>"
   }
 }
 {
@@ -30,23 +30,23 @@
     "cluster_role": "LOGGER",
     "mgmt_role": null,
     "port": 2202,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "proxy-03": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
     "port": 2205,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "proxy-04": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
     "port": 2206,
-    "state": "RUNNING"
+    "state": "<canonified>"
   },
   "worker-01": {
     "cluster_role": "WORKER",
     "mgmt_role": null,
-    "state": "RUNNING"
+    "state": "<canonified>"
   }
 }

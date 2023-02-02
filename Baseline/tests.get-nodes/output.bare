@@ -7,12 +7,12 @@
         "cluster_role": null,
         "mgmt_role": "CONTROLLER",
         "port": 2151,
-        "state": "RUNNING"
+        "state": "<canonified>"
       },
       "instance-1": {
         "cluster_role": null,
         "mgmt_role": "AGENT",
-        "state": "RUNNING"
+        "state": "<canonified>"
       }
     }
   }

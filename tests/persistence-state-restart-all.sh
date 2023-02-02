@@ -79,4 +79,4 @@ zeek_client get-config >output.staged
 zeek_client get-config --deployed >output.deployed
 
 # And, we should have a cluster:
-zeek_client get-nodes | tee output.zc.nodes | jq 'del(.results[][].pid)' >output.nodes
+zeek_client get-nodes | tee output.zc.nodes | $SCRIPTS/jq-canonify-nodestate >output.nodes
