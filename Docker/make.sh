@@ -109,9 +109,9 @@ docker build -t zeektest-prebuild ./docker.prebuild
 
 docker rm -f zeektest-builder 2>/dev/null
 docker run -it --name zeektest-builder \
-       -v "$src_path:/mnt/vol/src:z" \
-       -v "$ccache_path:/mnt/vol/ccache:z" \
-       -v "$build_path:/mnt/vol/build:z" zeektest-prebuild
+       -v "$src_path:/mnt/vol/src:ro,Z" \
+       -v "$ccache_path:/mnt/vol/ccache:Z" \
+       -v "$build_path:/mnt/vol/build:Z" zeektest-prebuild
 docker commit zeektest-builder zeektest-build
 docker rm -f zeektest-builder 2>/dev/null
 
