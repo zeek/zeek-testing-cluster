@@ -11,6 +11,7 @@ RUN apt-get -q update \
      flex \
      g++ \
      gcc \
+     git \
      libfl2 \
      libfl-dev \
      libmaxminddb-dev \
@@ -41,6 +42,10 @@ ENV VOL_CCACHE_DIR=/mnt/vol/ccache
 ENV CCACHE_DIR=/mnt/vol/ccache
 
 RUN mkdir -p $ZEEK_TOOLS_DIR
+
+# The following volume mount results in a source tree not owned by the user
+# running git on it. Prevent git from complaining about this:
+RUN git config --global --add safe.directory "*"
 
 VOLUME $VOL_SRC_DIR $VOL_BUILD_DIR $VOL_CCACHE_DIR
 
