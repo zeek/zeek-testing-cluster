@@ -44,7 +44,7 @@ if [[ -n "$GITHUB_ACTION" || -n "$CIRRUS_CI" ]]; then
     exit 0
 fi
 
-if have_docker_image && [[ ! -f $src_path/zeek-config.h.in ]]; then
+if have_docker_image && [[ ! -f $src_path/zeek-path-dev.in ]]; then
     msg "No source tree available, using existing ${docker_image}."
     exit 0
 fi
