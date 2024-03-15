@@ -12,7 +12,7 @@ if docker ps -a | grep -q $controller; then
 fi
 
 # Grab the Docker logs
-docker-compose -p ${testname}_ -f docker-compose.yml logs >docker-compose.logs
+docker compose -p ${testname}_ -f docker-compose.yml logs >docker-compose.logs
 
 [ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
 [ "$TEST_FAILED" -eq 1 ] && [ -n "$TEST_SKIP_DOCKER_TEARDOWN_ON_FAILURE" ] && exit 0
@@ -28,6 +28,6 @@ if [ ! -f docker-compose.yml ]; then
 fi
 
 # Don't wait at all for clean container shutdown
-docker-compose -p ${testname}_ -f docker-compose.yml down -t 0
+docker compose -p ${testname}_ -f docker-compose.yml down -t 0
 
 exit 0

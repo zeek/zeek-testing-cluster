@@ -11,8 +11,8 @@ command -v docker >/dev/null || {
     exit 1
 }
 
-command -v docker-compose >/dev/null || {
-    echo "docker-compose command unavailable"
+docker compose version >/dev/null || {
+    echo "docker compose plugin unavailable"
     exit 1
 }
 
