@@ -23,16 +23,13 @@ x-zeek-controller: &ZEEK_CONTROLLER
 
 services:
   controller:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_CONTROLLER
+    <<: [*ZEEK_BASE, *ZEEK_CONTROLLER]
 
   inst1:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_AGENT
+    <<: [*ZEEK_BASE, *ZEEK_AGENT]
 
   inst2:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_AGENT
+    <<: [*ZEEK_BASE, *ZEEK_AGENT]
 
   client:
     image: zeektest:latest

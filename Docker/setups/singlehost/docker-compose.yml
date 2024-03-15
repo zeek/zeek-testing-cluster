@@ -29,9 +29,7 @@ x-zeek-client: &ZEEK_CLIENT
 
 services:
   controller:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_CONTROLLER
+    <<: [*ZEEK_BASE, *ZEEK_CONTROLLER]
 
   client:
-    <<: *ZEEK_BASE
-    <<: *ZEEK_CLIENT
+    <<: [*ZEEK_BASE, *ZEEK_CLIENT]
