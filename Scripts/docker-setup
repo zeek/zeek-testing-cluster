@@ -46,16 +46,16 @@ docker_populate() {
     fi
 }
 
-# The corresponding "docker-compose down" happens in docker-compose-teardown.
+# The corresponding "docker compose down" happens in docker-compose-teardown.
 # Might shift this around in the future for better symmetry.
 docker_compose_up() {
     local config1="${1:-docker-compose.yml}"
     local config2="${2:-docker-compose.override.yml}"
 
     if [ -f "${config2}" ]; then
-        docker-compose -p ${testname} -f "$config1" -f "$config2" up -d
+        docker compose -p ${testname} -f "$config1" -f "$config2" up -d
     else
-        docker-compose -p ${testname} -f "$config1" up -d
+        docker compose -p ${testname} -f "$config1" up -d
     fi
 }
 
