@@ -1,8 +1,8 @@
 FROM debian:bullseye-slim
 LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 
-ENV PATH "/usr/local/zeek/bin:${PATH}"
-ENV PYTHONPATH "/usr/local/zeek/lib/zeek/python:${PYTHONPATH}"
+ENV PATH="/usr/local/zeek/bin:${PATH}"
+ENV PYTHONPATH="/usr/local/zeek/lib/zeek/python"
 
 # This installs the same set of packages we also provide in the official Docker image.
 RUN apt-get -q update \
