@@ -15,13 +15,13 @@
   "proxy-01": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
-    "port": 2203,
+    "port": 2202,
     "state": "<canonified>"
   },
   "proxy-02": {
     "cluster_role": "PROXY",
     "mgmt_role": null,
-    "port": 2204,
+    "port": 2203,
     "state": "<canonified>"
   }
 }
@@ -29,7 +29,7 @@
   "logger-02": {
     "cluster_role": "LOGGER",
     "mgmt_role": null,
-    "port": 2202,
+    "port": 2204,
     "state": "<canonified>"
   },
   "proxy-03": {
