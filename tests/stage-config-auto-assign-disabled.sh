@@ -12,7 +12,7 @@ docker_populate singlehost
 
 # Disable auto-assignment
 cat >>zeekscripts/controller-local.zeek <<EOF
-redef Management::Controller::auto_assign_ports = F;
+redef Management::Controller::auto_assign_broker_ports = F;
 EOF
 
 docker_compose_up

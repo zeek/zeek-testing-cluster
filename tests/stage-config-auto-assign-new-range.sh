@@ -13,7 +13,7 @@ docker_populate singlehost
 
 # Change the start port for auto-assignment:
 cat >>zeekscripts/controller-local.zeek <<EOF
-redef Management::Controller::auto_assign_start_port = 3000/tcp;
+redef Management::Controller::auto_assign_broker_start_port = 3000/tcp;
 EOF
 
 docker_compose_up
