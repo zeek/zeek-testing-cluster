@@ -3,6 +3,8 @@ version: "3"
 # docker-compose requires the x- prefix for unrelated YAML nodes
 x-zeek-template: &ZEEK_BASE
   image: zeektest:latest
+  ulimits:
+    nofile: 1024
 
 x-zeek-controller: &ZEEK_CONTROLLER
   command: /usr/local/zeek/bin/zeek -j "site/testing/${ZEEK_ENTRYPOINT:-controller-and-agent.zeek}"
