@@ -3,6 +3,7 @@
   "id": "xxx",
   "instances": [
     {
+      "host": "127.0.0.1",
       "name": "instance-1"
     }
   ],
