@@ -2,6 +2,7 @@
 {
   "instances": [
     {
+      "host": "127.0.0.1",
       "name": "instance-1"
     }
   ],
@@ -11,6 +12,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": null,
+      "metrics_port": null,
       "name": "logger-01",
       "options": null,
       "port": 5001,
@@ -22,6 +24,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": null,
+      "metrics_port": null,
       "name": "manager",
       "options": null,
       "port": 5000,
@@ -33,6 +36,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": "eth0",
+      "metrics_port": null,
       "name": "worker-01",
       "options": null,
       "port": null,
@@ -44,6 +48,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": "lo",
+      "metrics_port": null,
       "name": "worker-02",
       "options": null,
       "port": null,

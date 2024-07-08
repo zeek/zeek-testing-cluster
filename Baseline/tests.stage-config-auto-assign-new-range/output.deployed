@@ -3,6 +3,7 @@
   "id": "xxx",
   "instances": [
     {
+      "host": "127.0.0.1",
       "name": "instance-1"
     }
   ],
@@ -12,6 +13,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": null,
+      "metrics_port": null,
       "name": "logger-01",
       "options": null,
       "port": 3001,
@@ -23,6 +25,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": null,
+      "metrics_port": null,
       "name": "manager",
       "options": null,
       "port": 3000,
@@ -34,6 +37,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": null,
+      "metrics_port": null,
       "name": "proxy-01",
       "options": null,
       "port": 3002,
@@ -45,6 +49,7 @@
       "env": {},
       "instance": "instance-1",
       "interface": "eth0",
+      "metrics_port": null,
       "name": "worker-01",
       "options": null,
       "port": null,

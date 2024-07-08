@@ -2,14 +2,21 @@
 
 testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
 
-# Preserve the controller's persistent state:
-controller=${testname}__controller_1
-if docker ps -a | grep -q $controller; then
-    mkdir -p controller/var
-    docker cp $controller:/usr/local/zeek/var/lib controller/var/lib
-    docker cp $controller:/usr/local/zeek/spool controller/spool
-    docker cp $controller:/usr/local/zeek/logs controller/logs
-fi
+preserve_container_state() {
+    local name="$1"
+    local container="${testname}__${name}_1"
+    if docker ps -a | grep -q "$container"; then
+        mkdir -p "$name/var"
+        docker cp "$container:/usr/local/zeek/var/lib" "$name/var/lib"
+        docker cp "$container:/usr/local/zeek/spool" "$name/spool"
+        docker cp "$container:/usr/local/zeek/logs" "$name/logs"
+    fi
+}
+
+# Preserve the containers' persistent state:
+preserve_container_state controller
+preserve_container_state inst1
+preserve_container_state inst2
 
 # Grab the Docker logs
 docker compose -p ${testname}_ -f docker-compose.yml logs >docker-compose.logs

@@ -2,6 +2,7 @@
 {
   "instances": [
     {
+      "host": "127.0.0.1",
       "name": "agent-controller"
     }
   ],
@@ -11,6 +12,7 @@
       "env": {},
       "instance": "agent-controller",
       "interface": null,
+      "metrics_port": null,
       "name": "logger",
       "options": null,
       "port": 2201,
@@ -22,6 +24,7 @@
       "env": {},
       "instance": "agent-controller",
       "interface": null,
+      "metrics_port": null,
       "name": "manager",
       "options": null,
       "port": 2200,
@@ -33,6 +36,7 @@
       "env": {},
       "instance": "agent-controller",
       "interface": "lo",
+      "metrics_port": null,
       "name": "worker-01",
       "options": null,
       "port": null,
@@ -44,6 +48,7 @@
       "env": {},
       "instance": "agent-controller",
       "interface": "eth0",
+      "metrics_port": null,
       "name": "worker-02",
       "options": null,
       "port": null,
