@@ -4,6 +4,7 @@ LABEL maintainer="Christian Kreibich <christian@corelight.com>"
 # Configure system for build.
 RUN apt-get -q update \
  && apt-get install -q -y --no-install-recommends \
+     apt-utils \
      bind9 \
      bison \
      ccache \

@@ -7,6 +7,7 @@ ENV PYTHONPATH="/usr/local/zeek/lib/zeek/python"
 # This installs the same set of packages we also provide in the official Docker image.
 RUN apt-get -q update \
  && apt-get install -q -y --no-install-recommends \
+     apt-utils \
      ca-certificates \
      git \
      libmaxminddb0 \
