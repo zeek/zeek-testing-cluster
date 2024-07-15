@@ -1,5 +1,3 @@
-version: "3"
-
 # docker-compose requires the x- prefix for unrelated YAML nodes
 x-zeek-template: &ZEEK_BASE
   image: zeektest:latest
