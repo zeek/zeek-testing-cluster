@@ -17,25 +17,27 @@ x-zeek-controller: &ZEEK_CONTROLLER
     - "2149"
     - "2150"
     - "9090-9999"
-  hostname: controller
-  volumes:
-    - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
-    - ./scripts:/usr/local/bin:z
-    - ./etc:/usr/local/etc:z
 
 x-zeek-client: &ZEEK_CLIENT
-  hostname: client
   tty: true
   environment:
     - DEBIAN_FRONTEND=noninteractive
     - DEBCONF_NOWARNINGS=yes
-  volumes:
-    - ./scripts:/usr/local/bin:z
-    - ./etc:/usr/local/etc:z
 
 services:
   controller:
+    hostname: controller
+    volumes:
+      - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
+      - ./scripts:/usr/local/bin:z
+      - ./etc:/usr/local/etc:z
+      - ./services/controller/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_CONTROLLER]
 
   client:
+    hostname: client
+    volumes:
+      - ./scripts:/usr/local/bin:z
+      - ./etc:/usr/local/etc:z
+      - ./services/client/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_CLIENT]

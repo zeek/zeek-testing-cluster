@@ -16,9 +16,6 @@ x-zeek-controller: &ZEEK_CONTROLLER
   expose:
     - "2149"
     - "2150"
-  volumes:
-    - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
-    - ./scripts:/usr/local/bin:z
 
 x-zeek-agent: &ZEEK_AGENT
   command: /usr/local/zeek/bin/zeek -j site/testing/agent.zeek
@@ -32,15 +29,9 @@ x-zeek-agent: &ZEEK_AGENT
   expose:
     - "2151"
     - "9090-9999"
-  volumes:
-    - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
-    - ./scripts:/usr/local/bin:z
 
 x-zeek-client: &ZEEK_CLIENT
   tty: true
-  volumes:
-    - ./scripts:/usr/local/bin:z
-    - ./etc:/usr/local/etc:z
   environment:
     - DEBIAN_FRONTEND=noninteractive
     - DEBCONF_NOWARNINGS=yes
@@ -48,16 +39,33 @@ x-zeek-client: &ZEEK_CLIENT
 services:
   controller:
     hostname: controller
+    volumes:
+      - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
+      - ./scripts:/usr/local/bin:z
+      - ./etc:/usr/local/etc:z
+      - ./services/controller/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_CONTROLLER]
 
   inst1:
     hostname: inst1
+    volumes:
+      - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
+      - ./scripts:/usr/local/bin:z
+      - ./services/inst1/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_AGENT]
 
   inst2:
     hostname: inst2
+    volumes:
+      - ./zeekscripts:/usr/local/zeek/share/zeek/site/testing:z
+      - ./scripts:/usr/local/bin:z
+      - ./services/inst2/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_AGENT]
 
   client:
     hostname: client
+    volumes:
+      - ./scripts:/usr/local/bin:z
+      - ./etc:/usr/local/etc:z
+      - ./services/client/run:/tmp/run:z
     <<: [*ZEEK_BASE, *ZEEK_CLIENT]
