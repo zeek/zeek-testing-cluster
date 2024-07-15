@@ -70,12 +70,17 @@ for hostport in $(jq -r '.[0].targets | join(" ")' output.manager-sd.json); do
     fi
 done
 
-# All nodes expose telemetry. Smoke-test presence of the version info:
-client_cmd "curl -s http://inst1:9000/metrics" | tee output.manager.dat | grep -q zeek_version_info
-client_cmd "curl -s http://inst1:9001/metrics" | tee output.logger.dat | grep -q zeek_version_info
-client_cmd "curl -s http://inst2:9002/metrics" | tee output.worker.dat | grep -q zeek_version_info
+# All nodes expose telemetry, grab it:
+client_cmd "curl -s http://inst1:9000/metrics >/tmp/run/output.manager.dat"
+client_cmd "curl -s http://inst1:9001/metrics >/tmp/run/output.logger.dat"
+client_cmd "curl -s http://inst2:9002/metrics >/tmp/run/output.worker.dat"
+
+# Smoke-test presence of the version info:
+grep -q zeek_version_info ./services/client/run/output.manager.dat
+grep -q zeek_version_info ./services/client/run/output.logger.dat
+grep -q zeek_version_info ./services/client/run/output.worker.dat
 
 # Verify the node identities are as we expect:
-grep -q 'endpoint="manager"' output.manager.dat
-grep -q 'endpoint="logger"' output.logger.dat
-grep -q 'endpoint="worker"' output.worker.dat
+grep -q 'endpoint="manager"' ./services/client/run/output.manager.dat
+grep -q 'endpoint="logger"' ./services/client/run/output.logger.dat
+grep -q 'endpoint="worker"' ./services/client/run/output.worker.dat

@@ -68,12 +68,18 @@ zeek_client "get-id-value Management::Controller::auto_assign_metrics_start_port
 client_cmd "curl -s http://controller:9000/services.json" \
     | jq '.[].targets |= sort' >output.manager-sd.json
 
-# The manager, logger, and worker also expose telemetry:
-client_cmd "curl -s http://controller:9000/metrics" | tee output.manager.dat | grep -q zeek_version_info
-client_cmd "curl -s http://controller:9001/metrics" | tee output.logger.dat | grep -q zeek_version_info
-client_cmd "curl -s http://controller:9002/metrics" | tee output.worker.dat | grep -q zeek_version_info
+# All nodes expose telemetry, grab it:
+client_cmd "curl -s http://controller:9000/metrics >/tmp/run/output.manager.dat"
+client_cmd "curl -s http://controller:9001/metrics >/tmp/run/output.logger.dat"
+client_cmd "curl -s http://controller:9002/metrics >/tmp/run/output.worker.dat"
+
+# Smoke-test presence of the version info:
+grep -q zeek_version_info ./services/client/run/output.manager.dat
+grep -q zeek_version_info ./services/client/run/output.logger.dat
+grep -q zeek_version_info ./services/client/run/output.worker.dat
 
 # Verify the node identities are as we expect:
-grep -q 'endpoint="manager"' output.manager.dat
-grep -q 'endpoint="logger"' output.logger.dat
-grep -q 'endpoint="worker"' output.worker.dat
+# Verify the node identities are as we expect:
+grep -q 'endpoint="manager"' ./services/client/run/output.manager.dat
+grep -q 'endpoint="logger"' ./services/client/run/output.logger.dat
+grep -q 'endpoint="worker"' ./services/client/run/output.worker.dat
