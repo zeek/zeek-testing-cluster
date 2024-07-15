@@ -2,21 +2,33 @@
 
 testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
 
+preserve_container_state_client() {
+    # Nothing so far
+    :
+}
+
 preserve_container_state() {
     local name="$1"
     local container="${testname}__${name}_1"
+    local prefix="services/$name/artifacts"
+
     if docker ps -a | grep -q "$container"; then
-        mkdir -p "$name/var"
-        docker cp "$container:/usr/local/zeek/var/lib" "$name/var/lib"
-        docker cp "$container:/usr/local/zeek/spool" "$name/spool"
-        docker cp "$container:/usr/local/zeek/logs" "$name/logs"
+        mkdir -p "$prefix/var"
+        docker cp "$container:/usr/local/zeek/var/lib" "$prefix/var/lib"
+        docker cp "$container:/usr/local/zeek/spool" "$prefix/spool"
+        docker cp "$container:/usr/local/zeek/logs" "$prefix/logs"
     fi
 }
 
-# Preserve the containers' persistent state:
-preserve_container_state controller
-preserve_container_state inst1
-preserve_container_state inst2
+# Preserve the containers' persistent state. If there's a service-specific
+# routine, use that, otherwise handle generically.
+for service in $(docker compose config --services); do
+    if [[ $(type -t "preserve_container_state_$service") == function ]]; then
+        preserve_container_state_$service
+    else
+        preserve_container_state $service
+    fi
+done
 
 # Grab the Docker logs
 docker compose -p ${testname}_ -f docker-compose.yml logs >docker-compose.logs

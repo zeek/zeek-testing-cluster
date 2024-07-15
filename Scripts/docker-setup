@@ -44,6 +44,11 @@ docker_populate() {
     if [ -d $DOCKER/setups/$template/etc ]; then
         cp -pr $DOCKER/setups/$template/etc .
     fi
+
+    # Per-service directories for bind mounts available during testing.
+    for service in $(docker compose config --services); do
+        mkdir -p "./services/$service/run"
+    done
 }
 
 # The corresponding "docker compose down" happens in docker-compose-teardown.
