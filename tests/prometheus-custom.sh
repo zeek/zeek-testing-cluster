@@ -69,9 +69,13 @@ wait_for_all_nodes_running || fail "nodes did not end up running"
 client_cmd "curl -s http://controller:3000/services.json" \
     | jq '.[].targets |= sort' >output.manager-sd.json
 
-# Only manager and worker expose telemetry. Smoke-test presence of the version info:
-client_cmd "curl -s http://controller:3000/metrics" | tee output.manager.dat | grep -q zeek_version_info
-client_cmd "curl -s http://controller:3003/metrics" | tee output.worker.dat | grep -q zeek_version_info
+# Only manager and worker expose telemetry:
+client_cmd "curl -s http://controller:3000/metrics" >output.manager.dat
+client_cmd "curl -s http://controller:3003/metrics" >output.worker.dat
+
+# Smoke-test presence of the version info:
+grep -q zeek_version_info output.manager.dat
+grep -q zeek_version_info output.worker.dat
 
 # Verify the node identities are as we expect:
 grep -q 'endpoint="manager"' output.manager.dat

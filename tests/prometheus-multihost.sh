@@ -70,10 +70,15 @@ for hostport in $(jq -r '.[0].targets | join(" ")' output.manager-sd.json); do
     fi
 done
 
-# All nodes expose telemetry. Smoke-test presence of the version info:
-client_cmd "curl -s http://inst1:9000/metrics" | tee output.manager.dat | grep -q zeek_version_info
-client_cmd "curl -s http://inst1:9001/metrics" | tee output.logger.dat | grep -q zeek_version_info
-client_cmd "curl -s http://inst2:9002/metrics" | tee output.worker.dat | grep -q zeek_version_info
+# All nodes expose telemetry, grab it:
+client_cmd "curl -s http://inst1:9000/metrics" >output.manager.dat
+client_cmd "curl -s http://inst1:9001/metrics" >output.logger.dat
+client_cmd "curl -s http://inst2:9002/metrics" >output.worker.dat
+
+# Smoke-test presence of the version info:
+grep -q zeek_version_info output.manager.dat
+grep -q zeek_version_info output.logger.dat
+grep -q zeek_version_info output.worker.dat
 
 # Verify the node identities are as we expect:
 grep -q 'endpoint="manager"' output.manager.dat
