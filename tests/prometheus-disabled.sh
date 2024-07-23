@@ -11,11 +11,6 @@ docker_populate singlehost
 
 # The testsuite already disables metrics port auto-assignment.
 
-# Enable Prometheus ports in the created nodes -- but there should be none.
-cat >>zeekscripts/agent-local.zeek <<EOF
-@load frameworks/telemetry/prometheus
-EOF
-
 docker_compose_up
 
 # Add curl in the client container. We do this at runtime so it works with both

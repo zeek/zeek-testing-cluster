@@ -13,14 +13,6 @@ docker_populate singlehost
 
 # The testsuite disables auto-assignment by default.
 
-# Enable Prometheus ports in the created nodes. This technically applies to the
-# agent too, but since it's not running a cluster has no effect there. We could
-# alternatively also specify an extra script to load for every node in the
-# cluster config.
-cat >>zeekscripts/agent-local.zeek <<EOF
-@load frameworks/telemetry/prometheus
-EOF
-
 # Open up additional ports in the all-in-one container, so we can "scrape".
 cat >docker-compose.override.yml <<EOF
 services:

@@ -18,14 +18,6 @@ redef Management::Controller::auto_assign_metrics_ports = T;
 redef Management::Controller::auto_assign_metrics_start_port = 3000/tcp;
 EOF
 
-# Enable Prometheus ports in the created nodes. This technically applies to the
-# agent too, but since it's not running a cluster has no effect there. We could
-# alternatively also specify an extra script to load for every node in the
-# cluster config.
-cat >>zeekscripts/agent-local.zeek <<EOF
-@load frameworks/telemetry/prometheus
-EOF
-
 # Open up additional ports in the all-in-one container, so we can scrape from
 # the modified port range.
 cat >docker-compose.override.yml <<EOF

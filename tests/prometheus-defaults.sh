@@ -17,14 +17,6 @@ cat >>zeekscripts/controller-local.zeek <<EOF
 redef Management::Controller::auto_assign_metrics_ports = T;
 EOF
 
-# Enable Prometheus ports in the created nodes. This technically applies to the
-# agent too, but since it's not running a cluster has no effect there. We could
-# alternatively also specify an extra script to load for every node in the
-# cluster config.
-cat >>zeekscripts/agent-local.zeek <<EOF
-@load frameworks/telemetry/prometheus
-EOF
-
 docker_compose_up
 
 # Add curl in the client container. We do this at runtime so it works with both
