@@ -5,57 +5,57 @@
     "logger-01": {
       "Conn::LOG": {
         "columns": null,
-        "ev": "Conn::log_conn",
+        "ev": "Conn::log_conn: event(rec:Conn::Info)",
         "path": "conn",
-        "policy": "Conn::log_policy"
+        "policy": "Conn::log_policy: Log::PolicyHook"
       },
       "DNS::LOG": {
         "columns": null,
-        "ev": "DNS::log_dns",
+        "ev": "DNS::log_dns: event(rec:DNS::Info)",
         "path": "dns",
-        "policy": "DNS::log_policy"
+        "policy": "DNS::log_policy: Log::PolicyHook"
       }
     },
     "manager": {
       "Conn::LOG": {
         "columns": null,
-        "ev": "Conn::log_conn",
+        "ev": "Conn::log_conn: event(rec:Conn::Info)",
         "path": "conn",
-        "policy": "Conn::log_policy"
+        "policy": "Conn::log_policy: Log::PolicyHook"
       },
       "DNS::LOG": {
         "columns": null,
-        "ev": "DNS::log_dns",
+        "ev": "DNS::log_dns: event(rec:DNS::Info)",
         "path": "dns",
-        "policy": "DNS::log_policy"
+        "policy": "DNS::log_policy: Log::PolicyHook"
       }
     },
     "worker-01": {
       "Conn::LOG": {
         "columns": null,
-        "ev": "Conn::log_conn",
+        "ev": "Conn::log_conn: event(rec:Conn::Info)",
         "path": "conn",
-        "policy": "Conn::log_policy"
+        "policy": "Conn::log_policy: Log::PolicyHook"
       },
       "DNS::LOG": {
         "columns": null,
-        "ev": "DNS::log_dns",
+        "ev": "DNS::log_dns: event(rec:DNS::Info)",
         "path": "dns",
-        "policy": "DNS::log_policy"
+        "policy": "DNS::log_policy: Log::PolicyHook"
       }
     },
     "worker-02": {
       "Conn::LOG": {
         "columns": null,
-        "ev": "Conn::log_conn",
+        "ev": "Conn::log_conn: event(rec:Conn::Info)",
         "path": "conn",
-        "policy": "Conn::log_policy"
+        "policy": "Conn::log_policy: Log::PolicyHook"
       },
       "DNS::LOG": {
         "columns": null,
-        "ev": "DNS::log_dns",
+        "ev": "DNS::log_dns: event(rec:DNS::Info)",
         "path": "dns",
-        "policy": "DNS::log_policy"
+        "policy": "DNS::log_policy: Log::PolicyHook"
       }
     }
   }
