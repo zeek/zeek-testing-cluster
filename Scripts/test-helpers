@@ -37,15 +37,36 @@ run() {
     return 0
 }
 
-# Try a given command repeatedly for up to 5 seconds until it succeeds.
-# Returns with success if so, and failure if the command always failed.
+# Try a given command repeatedly for up to the configurable number of seconds
+# until it succeeds. The default is to try twice a second for 5 seconds. Use
+# -d/-i to pass custom delays and intervals -- these must come as first
+# arguments. Returns with success if the command eventually succeeded, and
+# failure if time ran out.
 try_until() {
-    local reps=10
-    local delay=0.5
+    local delay_secs=5
+    local delay_ival=0.5
+
+    while [ "$1" != "" ]; do
+        case "$1" in
+            "-d"|"--delay-secs")
+                delay_secs="$2"
+                shift 2
+                ;;
+            "-i"|"--interval-secs")
+                delay_ival="$2"
+                shift 2
+                ;;
+            *)
+                break
+                ;;
+        esac
+    done
+
+    local reps="$(python3 -c "print($delay_secs / $delay_ival)")"
 
     for i in $(seq $reps); do
         "$@" && return 0
-        sleep $delay
+        sleep "$delay_ival"
     done
 
     return 1
