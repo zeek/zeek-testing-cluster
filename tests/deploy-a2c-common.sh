@@ -5,6 +5,9 @@
 # The Zeek host runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings.
 
+# Give agent time to connect to the controller.
+wait_for_instances 1
+
 zeek_client deploy-config - <<EOF
 [instances]
 instance-1

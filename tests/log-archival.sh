@@ -50,6 +50,9 @@ EOF
 
 docker_compose_up
 
+# Give agent time to connect to the controller:
+wait_for_instances 1
+
 # This needs "ps" on the controller
 controller_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends procps"
 

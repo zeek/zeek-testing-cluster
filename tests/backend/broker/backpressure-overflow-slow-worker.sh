@@ -25,6 +25,9 @@ EOF
 
 docker_compose_up
 
+# Give agent time to connect to the controller.
+wait_for_instances 1
+
 # For minimal deployment (without spelling out instances etc) to work, we need
 # to run on the controller machine:
 controller_cmd zeek-client -c /usr/local/etc/zeek-client.cfg deploy-config - <<EOF

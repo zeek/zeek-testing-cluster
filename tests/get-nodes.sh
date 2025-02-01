@@ -11,7 +11,7 @@
 docker_populate singlehost
 docker_compose_up
 
-# Give agent time time to connect to the controller:
+# Give agent time to connect to the controller:
 wait_for_instances 1
 
 # We now run a controller named "controller" and an agent named "instance-1"

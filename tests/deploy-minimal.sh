@@ -18,6 +18,10 @@ EOF
 
 docker_compose_up
 
+# Give agent time to connect to the controller. This isn't technically required
+# for deploy-config (given internal retries), but ensures race-free output below.
+wait_for_instances 1
+
 # For the minimal deployment to work, we need to run it locally on the
 # controller machine, not as in the other tests from its own container:
 controller_cmd zeek-client -c /usr/local/etc/zeek-client.cfg deploy-config - <<EOF

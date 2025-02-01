@@ -11,6 +11,9 @@
 docker_populate singlehost
 docker_compose_up
 
+# Give agent time to connect to the controller.
+wait_for_instances 1
+
 # This needs "ps" and "sqlite3":
 controller_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends procps sqlite3"
 

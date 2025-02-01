@@ -19,6 +19,9 @@ EOF
 
 docker_compose_up
 
+# Give agent time to connect to the controller.
+wait_for_instances 1
+
 # Add curl in the client container. We do this at runtime so it works with both
 # this testsuite's development container and the official Zeek one, as built in
 # our regular CI.
