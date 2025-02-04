@@ -13,6 +13,7 @@ docker_compose_up
 
 # The Zeek host now runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings.
+wait_for_instances 1
 
 # Let's break the logger:
 docker_exec -i -- controller 'echo EEEK >>  $(zeek-config --script_dir)/base/frameworks/cluster/nodes/logger.zeek'

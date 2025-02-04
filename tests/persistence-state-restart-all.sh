@@ -31,16 +31,13 @@ EOF
 
 docker_compose_up
 
-# The Zeek host now runs a controller named "controller" and an agent named
-# "instance-1" that connects to it, with default settings.
-
 # This needs "ps" and "sqlite3" in the controller's container:
 controller_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends procps sqlite3"
 
 # Now launch controller and agent in a new Zeek process tree:
 docker_exec -d -- controller /usr/local/zeek/bin/zeek -j site/testing/controller-and-agent.zeek
 
-# Give agent time time to connect to the controller:
+# Give agent time to connect to the controller:
 wait_for_instances 1
 
 # Deploy a Zeek cluster and give its nodes time to come up:

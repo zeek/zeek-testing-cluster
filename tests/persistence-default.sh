@@ -9,6 +9,9 @@
 docker_populate singlehost
 docker_compose_up
 
+# Give agent time to connect to the controller:
+wait_for_instances 1
+
 # The Zeek host now runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings. Deploy a small
 # cluster:

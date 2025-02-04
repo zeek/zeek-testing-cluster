@@ -20,6 +20,7 @@ docker_compose_up
 
 # The Zeek host now runs a controller named "controller" and an agent named
 # "instance-1" that connects to it, with default settings.
+wait_for_instances 1
 
 zeek_client get-config >output-preupload-staged.error 2>&1 \
     && fail "zeek-client get-config without upload did not fail"

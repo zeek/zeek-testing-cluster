@@ -26,6 +26,9 @@ docker_exec -d -w /tmp/agent2 -- controller zeek -j site/testing/agent.zeek \
     Management::Agent::name=instance-2 \
     Broker::default_port=10001/tcp
 
+# Give agents time to connect to the controller:
+wait_for_instances 2
+
 # This needs "ps":
 controller_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends procps"
 
