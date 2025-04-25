@@ -21,6 +21,7 @@ EOF
 cat >>zeekscripts/local.zeek <<EOF
 @load frameworks/telemetry/log
 redef Telemetry::log_interval = 1sec;
+redef Broker::peer_overflow_policy = "disconnect";
 EOF
 
 docker_compose_up
