@@ -76,6 +76,6 @@ grep -q zeek_version_info output.logger.dat
 grep -q zeek_version_info output.worker.dat
 
 # Verify the node identities are as we expect:
-grep -q 'endpoint="manager"' output.manager.dat
-grep -q 'endpoint="logger"' output.logger.dat
-grep -q 'endpoint="worker"' output.worker.dat
+grep -q 'node="manager"' output.manager.dat
+grep -q 'node="logger"' output.logger.dat
+grep -q 'node="worker"' output.worker.dat
