@@ -1,21 +1,23 @@
-FROM debian:bullseye-slim
-LABEL maintainer="Christian Kreibich <christian@corelight.com>"
-
-ENV PATH="/usr/local/zeek/bin:${PATH}"
-ENV PYTHONPATH="/usr/local/zeek/lib/zeek/python"
+FROM debian:13-slim
 
 # This installs the same set of packages we also provide in the official Docker image.
 RUN apt-get -q update \
  && apt-get install -q -y --no-install-recommends \
      ca-certificates \
      git \
+     jq \
      libmaxminddb0 \
-     libpython3.9 \
+     libnode115 \
      libpcap0.8 \
-     libssl1.1 \
+     libpython3.13 \
+     libssl3 \
+     libuv1 \
      libz1 \
-     python3-minimal \
+     libzmq5 \
+     net-tools \
+     procps \
      python3-git \
+     python3-minimal \
      python3-semantic-version \
      python3-websocket \
  && apt-get clean \
@@ -24,3 +26,6 @@ RUN apt-get -q update \
 WORKDIR /usr/local/zeek/var/lib
 
 COPY --from=zeektest-build /usr/local/zeek /usr/local/zeek
+
+ENV PATH="/usr/local/zeek/bin:${PATH}"
+ENV PYTHONPATH="/usr/local/zeek/lib/zeek/python"

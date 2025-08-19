@@ -1,13 +1,12 @@
-FROM debian:bullseye-slim
-LABEL maintainer="Christian Kreibich <christian@corelight.com>"
+FROM debian:13-slim
 
 # Configure system for build.
 RUN apt-get -q update \
  && apt-get install -q -y --no-install-recommends \
-     bind9 \
      bison \
      ccache \
      cmake \
+     cppzmq-dev \
      flex \
      g++ \
      gcc \
@@ -15,15 +14,17 @@ RUN apt-get -q update \
      libfl2 \
      libfl-dev \
      libmaxminddb-dev \
+     libnode-dev \
      libpcap-dev \
      libssl-dev \
+     libuv1-dev \
      libz-dev \
      make \
-     python3-minimal \
-     python3.9-dev \
-     swig \
      ninja-build \
+     python3-minimal \
+     python3-dev \
      python3-pip \
+     swig \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
