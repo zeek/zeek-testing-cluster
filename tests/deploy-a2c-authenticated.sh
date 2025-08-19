@@ -32,12 +32,11 @@ EOF
 
 docker_compose_up
 
-# The certificate below uses common name 1.foo.bar, so make the controller
+# The certificate uses common name 1.foo.bar, so make the controller
 # available under that name. There are several ways for doing this,
 # including at the Docker level, but it seems easiest to just override name
 # resolution within the client container:
-client_cmd "apt-get -q update && apt-get install -q -y --no-install-recommends host"
-client_cmd 'echo "$(host controller | awk "{ print \$NF }") 1.foo.bar" >>/etc/hosts'
+client_cmd 'echo "$(getent hosts controller | grep controller | awk "{ print \$1 }") 1.foo.bar" >>/etc/hosts'
 
 # Our zeek_client wrapper honors this:
 export TEST_ZEEK_CLIENT_ARGS="--set controller.host=1.foo.bar"
