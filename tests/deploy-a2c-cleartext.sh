@@ -15,11 +15,6 @@ cat >>zeekscripts/local.zeek <<EOF
 redef Broker::disable_ssl = T;
 EOF
 
-cat >>etc/zeek-client.cfg <<EOF
-[ssl]
-disable = true
-EOF
-
 docker_compose_up
 
 . $TEST_BASE/tests/deploy-a2c-common.sh

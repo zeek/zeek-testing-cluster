@@ -16,18 +16,19 @@ docker_populate singlehost
 cp -pr $FILES/certs etc/
 
 cat >>zeekscripts/local.zeek <<EOF
-redef Broker::ssl_cafile = "/usr/local/etc/certs/ca.pem";
-redef Broker::ssl_certificate = "/usr/local/etc/certs/cert.1.pem";
-redef Broker::ssl_keyfile = "/usr/local/etc/certs/key.1.enc.pem";
-redef Broker::ssl_passphrase = "12345";
+redef Management::Controller::tls_options_websocket = Cluster::WebSocketTLSOptions(
+  \$ca_file="/usr/local/etc/certs/ca.pem",
+  \$cert_file="/usr/local/etc/certs/cert.1.pem",
+  \$key_file="/usr/local/etc/certs/key.1.pem",
+);
 EOF
 
 cat >>etc/zeek-client.cfg <<EOF
 [ssl]
+enable = yes
 cafile = /usr/local/etc/certs/ca.pem
 certificate = /usr/local/etc/certs/cert.1.pem
-keyfile = /usr/local/etc/certs/key.1.enc.pem
-passphrase = 12345
+keyfile = /usr/local/etc/certs/key.1.pem
 EOF
 
 docker_compose_up
