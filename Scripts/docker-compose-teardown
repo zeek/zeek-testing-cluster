@@ -4,7 +4,7 @@ testname=$(echo "$1" | sed 's/[^a-zA-Z0-9]/_/g')
 
 preserve_container_state() {
     local name="$1"
-    local container="${testname}__${name}_1"
+    local container="${testname}-${name}-1"
     if docker ps -a | grep -q "$container"; then
         mkdir -p "$name/var"
         docker cp "$container:/usr/local/zeek/var/lib" "$name/var/lib"
@@ -19,7 +19,7 @@ preserve_container_state inst1
 preserve_container_state inst2
 
 # Grab the Docker logs
-docker compose -p ${testname}_ -f docker-compose.yml logs >docker-compose.logs
+docker compose -p ${testname} -f docker-compose.yml logs >docker-compose.logs
 
 [ -n "$TEST_SKIP_DOCKER_TEARDOWN" ] && exit 0
 [ "$TEST_FAILED" -eq 1 ] && [ -n "$TEST_SKIP_DOCKER_TEARDOWN_ON_FAILURE" ] && exit 0
@@ -34,7 +34,7 @@ if [ ! -f docker-compose.yml ]; then
     exit 0
 fi
 
-# Don't wait at all for clean container shutdown
-docker compose -p ${testname}_ -f docker-compose.yml down -t 0
+# Don't wait at all for clean container shutdown.
+docker compose -p ${testname} -f docker-compose.yml down -t 0
 
 exit 0

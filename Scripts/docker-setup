@@ -5,11 +5,12 @@ set -e
 set -o pipefail
 shopt -s expand_aliases
 
-# The name of the current test, tweaked to make suitable for a docker container
-# name. The extra underscore here delineates project name from containers, so in
-# practice two underscores result. This allows us to identify all containers
-# relating to a specific test reliably, outside of docker-compose.
-testname=$(echo "${TEST_NAME}_" | sed 's/[^a-zA-Z0-9]/_/g')
+# The name of the current test, tweaked for docker container naming.
+# All containers that are part of this test use this name as prefix,
+# via docker-compose's "project" mechanism. docker-compose v2 and
+# newer use dashes in the created naming, so the first dash in a
+# container name is a reliable separator.
+testname=$(echo "${TEST_NAME}" | sed 's/[^a-zA-Z0-9]/_/g')
 
 # Enable command tracing with time info when requested
 if [ -n "$TEST_TRACE_COMMANDS" ]; then
@@ -81,7 +82,7 @@ docker_exec() {
     shift
     local command="$@"
 
-    docker exec ${args[@]} ${testname}_${container}_1 bash -c "$command"
+    docker exec ${args[@]} ${testname}-${container}-1 bash -c "$command"
 }
 
 zeek_client() {

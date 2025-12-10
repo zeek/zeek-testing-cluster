@@ -8,10 +8,10 @@ if [ -z "$testname" ]; then
 fi
 
 # This runs before we populate the test directory with a docker-compose
-# setup. Just delete all containers with the test name in it. The double
-# underscores separate the docker-compose project name from individual
-# container names and identify the test.
-containers="$(docker ps -a --filter name="${testname}__" --format '{{.Names}}')"
+# setup. We delete any remaining containers for the current test. The dash
+# separates the docker-compose project name from individual container names and
+# identifies the test.
+containers="$(docker ps -a --filter name="${testname}-" --format '{{.Names}}')"
 [ -n "$containers" ] && docker rm -f $containers
 
 exit 0
