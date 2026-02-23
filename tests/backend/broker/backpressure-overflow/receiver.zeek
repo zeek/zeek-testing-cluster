@@ -27,6 +27,7 @@ event wedgie() {
 }
 
 event ping(epoch: count, ctr: count, padding: string) &is_used {
+	print fmt("received ping: %s %s %s", current_time(), epoch, ctr);
 	if ( epoch == 0 )
 		{
 		# Lock up the script layer after we've received a few pings.
@@ -43,4 +44,8 @@ event ping(epoch: count, ctr: count, padding: string) &is_used {
 		}
 
 	epoch_rx = epoch;
+}
+
+event zeek_init() {
+	print fmt("Backpressure policy: %s", Broker::peer_overflow_policy);
 }

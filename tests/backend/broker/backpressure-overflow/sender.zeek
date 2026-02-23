@@ -17,7 +17,7 @@ global ping_ival: interval = 0.01sec; # Rapdid, to eat up space quickly
 global ping_batch = 20;
 
 global epoch = 0; # Epochs increase with every backpressure-triggered de-peering
-global counter = 0; # A ping counter.
+global ctr = 0; # A ping counter.
 
 # A ping from manager to worker that the worker echoes back, to verify
 # liveness of that peering. This should always keep chugging -- if not, it means
@@ -31,6 +31,8 @@ global ping: event(epoch: count, ctr: count, padding: string);
 
 event Broker::peer_removed(endpoint: Broker::EndpointInfo, msg: string)
 	{
+	print fmt("Broker::peer_removed %s", msg);
+
 	if ( "caf::sec::backpressure_overflow" !in msg )
 		return;
 
@@ -51,11 +53,15 @@ event driver()
 	{
 	local i = 0;
 	while ( ++i < ping_batch )
-		Broker::publish(ping_topic, ping, epoch, ++counter, padding);
+		{
+		Broker::publish(ping_topic, ping, epoch, ++ctr, padding);
+		print fmt("Sender ping: %s %s %s", current_time(), epoch, ctr);
+		}
 
 	schedule ping_ival { driver() };
 	}
 
 event zeek_init() {
+	print fmt("Backpressure policy: %s", Broker::peer_overflow_policy);
 	schedule ping_ival { driver() };
 }
